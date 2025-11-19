@@ -19,7 +19,7 @@ import { styles } from './Piece.styles';
 
 // キャラクター画像のマッピング
 const PIECE_IMAGES: Record<PieceType, any> = {
-  1: require('../../../../assets/char11.png'),
+  1: require('../../../../assets/char1.png'),
   2: require('../../../../assets/char2.png'),
   3: require('../../../../assets/char3.png'),
   4: require('../../../../assets/char4.png'),
@@ -28,6 +28,14 @@ const PIECE_IMAGES: Record<PieceType, any> = {
   7: require('../../../../assets/char7.png'),
   8: require('../../../../assets/char8.png'),
   9: require('../../../../assets/char9.png'),
+};
+
+// Special Images
+const SPECIAL_IMAGES: Record<string, any> = {
+  bomb: require('../../../../assets/images/bomb.png'),
+  dokan: require('../../../../assets/images/dokan.png'),
+  ring: require('../../../../assets/images/ring.png'),
+  kesigomu: require('../../../../assets/images/kesigomu.png'),
 };
 
 interface ParticleProps {
@@ -183,11 +191,11 @@ export const Piece: React.FC<PieceProps> = ({
 
     return {
       transform: [
-        { scale: scale.value * pulse * (special === 'bomb' ? sPulse : 1) },
+        { scale: scale.value * pulse * sPulse },
         { rotate: `${rotation.value}deg` },
       ],
       opacity: opacity.value,
-      shadowColor: special === 'rainbow' ? '#FF00FF' : 'rgba(255,255,255,0.7)',
+      shadowColor: special !== 'none' ? '#FFD700' : 'rgba(255,255,255,0.7)',
       shadowOpacity: shimmer.value ? 0.8 : (special !== 'none' ? 0.6 : 0.25),
       shadowRadius: 6 + glow + (special !== 'none' ? 5 : 0),
       shadowOffset: { width: 0, height: shimmer.value ? 0 : 2 },
@@ -227,9 +235,9 @@ export const Piece: React.FC<PieceProps> = ({
             width: size * 0.9,
             height: size * 0.9,
             borderRadius: 12,
-            borderWidth: isSelected ? 3 : (special !== 'none' ? 2 : 0),
-            borderColor: isSelected ? '#FFD700' : (special === 'rainbow' ? '#FF00FF' : (special === 'bomb' ? '#FF4500' : (special === 'cross' ? '#00FFFF' : 'transparent'))),
-            backgroundColor: special === 'rainbow' ? '#330033' : (isBlock ? '#555' : undefined),
+            borderWidth: isSelected ? 3 : 0,
+            borderColor: isSelected ? '#FFD700' : 'transparent',
+            backgroundColor: isBlock ? '#555' : undefined,
           },
         ]}
       >
@@ -248,17 +256,6 @@ export const Piece: React.FC<PieceProps> = ({
           </View>
         )}
 
-        {/* Special Piece Overlays */}
-        {special === 'cross' && (
-          <View style={{ position: 'absolute', width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ width: '80%', height: 4, backgroundColor: 'rgba(255,255,255,0.8)' }} />
-            <View style={{ height: '80%', width: 4, backgroundColor: 'rgba(255,255,255,0.8)', position: 'absolute' }} />
-          </View>
-        )}
-        {special === 'bomb' && (
-          <View style={{ position: 'absolute', width: 10, height: 10, borderRadius: 5, backgroundColor: 'red', top: 5, right: 5 }} />
-        )}
-
         {/* Block Overlay */}
         {isBlock ? (
           <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#666', borderRadius: 10 }}>
@@ -268,13 +265,12 @@ export const Piece: React.FC<PieceProps> = ({
           </View>
         ) : (
           <Image
-            source={PIECE_IMAGES[type]}
+            source={special !== 'none' && SPECIAL_IMAGES[special] ? SPECIAL_IMAGES[special] : PIECE_IMAGES[type]}
             style={[
               styles.image,
               {
                 width: size * 0.85,
                 height: size * 0.85,
-                opacity: special === 'rainbow' ? 0.8 : 1,
               }
             ]}
             resizeMode="contain"

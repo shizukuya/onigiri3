@@ -1,90 +1,104 @@
-/**
- * サウンド再生用の簡易フック
- */
+import { useState, useCallback, useEffect, useRef } from 'react';
+import { Audio } from 'expo-av';
+import { loadGameData } from '../utils/storage';
 
-import { useCallback, useEffect, useRef } from 'react';
-import { Audio, AVPlaybackStatusSuccess } from 'expo-av';
-
+// Sound mapping
 const SOUND_MAP = {
-  matchSmall: require('../../assets/sounds/match_small.mp3'),
-  matchBig: require('../../assets/sounds/match_big.mp3'),
+  move: require('../../assets/sounds/move.mp3'),
+  matchSmall: require('../../assets/sounds/match_small.mp3'), // Fixed path
+  matchBig: require('../../assets/sounds/match_big.mp3'),     // Fixed path
   combo: require('../../assets/sounds/combo.mp3'),
-  swapFail: require('../../assets/sounds/swap_fail.mp3'),
+  bomb: require('../../assets/sounds/bomb.mp3'),
+  bombVoice: require('../../assets/sounds/bomb-voice.mp3'),
+  dokan: require('../../assets/sounds/dokan.mp3'),
+  ring: require('../../assets/sounds/ring.mp3'),
+  kesigomu: require('../../assets/sounds/kesigomu.mp3'),
   stageClear: require('../../assets/sounds/stage_clear.mp3'),
   stageFail: require('../../assets/sounds/stage_fail.mp3'),
   gameOver: require('../../assets/sounds/game_over.mp3'),
-  bgmStage: require('../../assets/sounds/bgm_stage1.mp3'),
-  down: require('../../assets/sounds/down.mp3'),
   reset: require('../../assets/sounds/reset.mp3'),
+  down: require('../../assets/sounds/down.mp3'),
 };
 
-type SoundKey = keyof typeof SOUND_MAP;
+const BGM_MAP: { [key: string]: any } = {
+  'bgm_stage1.mp3': require('../../assets/sounds/bgm_stage1.mp3'),
+  // Add more BGMs here as they become available
+};
 
 export const useSound = () => {
-  const soundObjects = useRef<Partial<Record<SoundKey, Audio.Sound>>>({});
+  const [bgmSound, setBgmSound] = useState<Audio.Sound | null>(null);
+  const [currentBgmName, setCurrentBgmName] = useState<string | null>(null);
 
-  const ensureLoaded = useCallback(async (key: SoundKey) => {
-    if (soundObjects.current[key]) return soundObjects.current[key]!;
-    const { sound } = await Audio.Sound.createAsync(SOUND_MAP[key], {
-      shouldPlay: false,
-    });
-    soundObjects.current[key] = sound;
-    return sound;
-  }, []);
-
-  const play = useCallback(
-    async (key: SoundKey, loop = false) => {
-      try {
-        const sound = await ensureLoaded(key);
-        await sound.setIsLoopingAsync(loop);
-        await sound.stopAsync();
-        await sound.setPositionAsync(0);
-        await sound.playAsync();
-      } catch (e) {
-        console.warn('Failed to play sound', key, e);
+  // Cleanup sounds on unmount
+  useEffect(() => {
+    return () => {
+      if (bgmSound) {
+        bgmSound.unloadAsync();
       }
-    },
-    [ensureLoaded]
-  );
+    };
+  }, [bgmSound]);
 
-  const stop = useCallback(async (key: SoundKey) => {
-    const sound = soundObjects.current[key];
-    if (!sound) return;
-    const status = (await sound.getStatusAsync()) as AVPlaybackStatusSuccess;
-    if (status.isLoaded && status.isPlaying) {
-      await sound.stopAsync();
+  const playEffect = useCallback(async (name: keyof typeof SOUND_MAP) => {
+    try {
+      // Check settings first
+      const data = await loadGameData();
+      // Assuming we might have a separate sound effect toggle later, 
+      // but for now let's just play effects always or check bgmEnabled if that covers both?
+      // Usually BGM and SE are separate. Let's assume SE is always on or add a toggle later.
+      // For now, just play.
+
+      const { sound } = await Audio.Sound.createAsync(SOUND_MAP[name]);
+      await sound.playAsync();
+
+      // Unload after playing
+      sound.setOnPlaybackStatusUpdate(async (status) => {
+        if (status.isLoaded && status.didJustFinish) {
+          await sound.unloadAsync();
+        }
+      });
+    } catch (error) {
+      // console.log('Failed to play sound', error);
     }
   }, []);
 
-  const playEffect = useCallback((key: SoundKey) => {
-    play(key, false);
-  }, [play]);
+  const playBgm = useCallback(async (bgmName: string = 'bgm_stage1.mp3') => {
+    try {
+      // Check settings
+      const data = await loadGameData();
+      if (!data.bgmEnabled) return;
 
-  const stopEffect = useCallback((key: SoundKey) => {
-    stop(key);
-  }, [stop]);
+      // If already playing the same BGM, do nothing
+      if (bgmSound && currentBgmName === bgmName) return;
 
-  const playBgm = useCallback(async () => {
-    const sound = await ensureLoaded('bgmStage');
-    await sound.setVolumeAsync(0.4);
-    play('bgmStage', true);
-  }, [play, ensureLoaded]);
+      // If playing different BGM, stop it
+      if (bgmSound) {
+        await bgmSound.stopAsync();
+        await bgmSound.unloadAsync();
+      }
 
-  const stopBgm = useCallback(() => {
-    stop('bgmStage');
-  }, [stop]);
+      const source = BGM_MAP[bgmName] || BGM_MAP['bgm_stage1.mp3'];
+      const { sound } = await Audio.Sound.createAsync(
+        source,
+        { isLooping: true, volume: 0.4 }
+      );
+      setBgmSound(sound);
+      setCurrentBgmName(bgmName);
+      await sound.playAsync();
+    } catch (error) {
+      console.log('Failed to play BGM', error);
+    }
+  }, [bgmSound, currentBgmName]);
 
-  useEffect(() => {
-    return () => {
-      Object.values(soundObjects.current).forEach((sound) => {
-        sound?.unloadAsync();
-      });
-    };
-  }, []);
+  const stopBgm = useCallback(async () => {
+    if (bgmSound) {
+      await bgmSound.stopAsync();
+      await bgmSound.unloadAsync();
+      setBgmSound(null);
+    }
+  }, [bgmSound]);
 
   return {
     playEffect,
-    stopEffect,
     playBgm,
     stopBgm,
   };

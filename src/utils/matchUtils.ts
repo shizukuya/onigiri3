@@ -23,7 +23,7 @@ export const findMatches = (grid: Grid, swapPos?: Position): Match[] => {
   for (let row = 0; row < GRID_SIZE; row++) {
     let matchStart = 0;
     let matchLength = 1;
-    let currentType: PieceType | undefined = grid[row][0]?.type;
+    let currentType: PieceType | undefined = (grid[row][0] && !grid[row][0]!.isBlock) ? grid[row][0]!.type : undefined;
 
     for (let col = 1; col < GRID_SIZE; col++) {
       const piece: Piece | undefined = grid[row][col];
@@ -62,7 +62,7 @@ export const findMatches = (grid: Grid, swapPos?: Position): Match[] => {
   for (let col = 0; col < GRID_SIZE; col++) {
     let matchStart = 0;
     let matchLength = 1;
-    let currentType: PieceType | undefined = grid[0][col]?.type;
+    let currentType: PieceType | undefined = (grid[0][col] && !grid[0][col]!.isBlock) ? grid[0][col]!.type : undefined;
 
     for (let row = 1; row < GRID_SIZE; row++) {
       const piece: Piece | undefined = grid[row][col];
@@ -139,53 +139,14 @@ export const findMatches = (grid: Grid, swapPos?: Position): Match[] => {
     });
 
     const type = currentMatchSegments[0].type;
-    let specialType: SpecialType = 'none';
-    let triggerPosition: Position = uniquePositions[0]; // Default to first position
-
-    // Check for Special Patterns
-    const isLTShape = currentMatchSegments.length >= 2; // Simple check for L/T shape (intersection)
-    const count = uniquePositions.length;
-
-    // Prioritize special types
-    const hasLine5 = currentMatchSegments.some(seg => seg.positions.length >= 5);
-    const hasLine4 = currentMatchSegments.some(seg => seg.positions.length === 4);
-
-    if (hasLine5) {
-      specialType = 'rainbow';
-    } else if (isLTShape) {
-      specialType = 'cross';
-    } else if (hasLine4) {
-      specialType = 'bomb';
-    }
-
-    // Determine trigger position (prioritize swap position or intersection)
-    if (swapPos && uniquePositions.some(p => p.row === swapPos.row && p.col === swapPos.col)) {
-      triggerPosition = swapPos;
-    } else if (isLTShape) {
-      // Find intersection point
-      const posCounts = new Map<string, number>();
-      currentMatchSegments.forEach(seg => {
-        seg.positions.forEach(p => {
-          const key = `${p.row},${p.col}`;
-          posCounts.set(key, (posCounts.get(key) || 0) + 1);
-        });
-      });
-      for (const [key, count] of posCounts.entries()) {
-        if (count > 1) {
-          const [r, c] = key.split(',').map(Number);
-          triggerPosition = { row: r, col: c };
-          break;
-        }
-      }
-    } else {
-      // Default to a central position or first if no specific trigger
-      triggerPosition = uniquePositions[Math.floor(uniquePositions.length / 2)];
-    }
+    // No special generation from matches anymore
+    const specialType: SpecialType = 'none';
+    const triggerPosition: Position = uniquePositions[0];
 
     matches.push({
       type,
       positions: uniquePositions,
-      count,
+      count: uniquePositions.length,
       specialType,
       triggerPosition,
     });

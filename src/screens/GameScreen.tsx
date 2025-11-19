@@ -3,7 +3,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ImageBackground, Text, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
   useSharedValue,
@@ -17,12 +17,21 @@ import { ScoreBoard } from '../components/game/ScoreBoard';
 import { Grid } from '../components/game/Grid';
 import { ComboDisplay } from '../components/game/ComboDisplay';
 import { FloatingScore } from '../components/game/FloatingScore/FloatingScore';
+import { SpecialEffectOverlay } from '../components/game/SpecialEffect/SpecialEffectOverlay';
 import { GameOverModal, StageResultModal } from '../components/ui/Modal';
 import { useGameLogic } from '../hooks/useGameLogic';
+import { useSound } from '../hooks/useSound';
 import { Position } from '../types/game';
 import { COLORS } from '../constants/colors';
+import { saveGameData } from '../utils/storage';
 
-export const GameScreen: React.FC = () => {
+const { width } = Dimensions.get('window');
+
+interface GameScreenProps {
+  onBack?: () => void;
+}
+
+export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
   const {
     grid,
     score,
@@ -33,6 +42,7 @@ export const GameScreen: React.FC = () => {
     stageCleared,
     stageFailed,
     currentLevel,
+    levelIndex,
     lives,
     highScore,
     recentMatches,
@@ -41,7 +51,20 @@ export const GameScreen: React.FC = () => {
     retryLevel,
     startNextLevel,
     resetRun,
+    reshuffleCount,
+    activeEffects,
+    removeSpecialEffect,
+    isLoading,
   } = useGameLogic();
+
+  const { playBgm, stopBgm } = useSound();
+
+  // Save progress on stage clear
+  useEffect(() => {
+    if (stageCleared) {
+      saveGameData({ currentLevel: levelIndex + 1 });
+    }
+  }, [stageCleared, levelIndex]);
 
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(
     null
@@ -122,66 +145,158 @@ export const GameScreen: React.FC = () => {
     }
   };
 
-  return (
-    <SafeAreaView style={[styles.container, { backgroundColor: getBackgroundColor(currentLevel.id) }]}>
-      <View style={styles.content}>
-        <Header title={`Stage ${currentLevel.id}: ${currentLevel.name}`} />
 
-        <ScoreBoard
+
+  // BGM Control
+  useEffect(() => {
+    playBgm(currentLevel.bgm);
+    return () => {
+      stopBgm();
+    };
+  }, [currentLevel.bgm]); // Re-run if BGM changes
+
+  // Background Image Mapping
+  const getBackgroundImage = (bgName?: string) => {
+    switch (bgName) {
+      case 'bg_stage2.png': return require('../../assets/images/bg_stage2.png');
+      case 'bg_stage3.png': return require('../../assets/images/bg_stage3.png');
+      default: return require('../../assets/images/bg_stage1.png');
+    }
+  };
+
+  return (
+    <ImageBackground
+      source={getBackgroundImage(currentLevel.background)}
+      style={styles.container}
+      resizeMode="cover"
+    >
+      {/* Full screen semi-transparent overlay */}
+      <View style={styles.overlay} />
+
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.content}>
+          <View style={styles.headerContainer}>
+            <TouchableOpacity style={styles.backButton} onPress={onBack}>
+              <Text style={styles.backButtonText}>TOP</Text>
+            </TouchableOpacity>
+            <View style={{ flex: 1 }}>
+              <Header title={`Stage ${currentLevel.id}: ${currentLevel.name}`} />
+            </View>
+          </View>
+
+          <ScoreBoard
+            score={score}
+            moves={moves}
+            highScore={highScore}
+            targetScore={currentLevel.targetScore}
+            lives={lives}
+          />
+
+          <Animated.View style={[styles.gameContainer, shakeStyle]}>
+            <ComboDisplay combo={combo} />
+            <View style={{ width: width - 8, height: width - 8 }}>
+              <Grid
+                grid={grid}
+                onSwipe={handleSwipeGesture}
+                selectedPosition={selectedPosition}
+                isProcessing={isProcessing}
+                matchPositions={recentMatches}
+                hintPositions={hintPositions}
+              />
+              {/* Special Effects Overlay */}
+              {activeEffects.map((effect) => (
+                <SpecialEffectOverlay
+                  key={effect.id}
+                  type={effect.type}
+                  position={effect.position}
+                  onComplete={() => removeSpecialEffect(effect.id)}
+                />
+              ))}
+            </View>
+
+            {floatingScores.map((s) => (
+              <FloatingScore
+                key={s.id}
+                score={s.score}
+                position={s.position}
+                combo={s.combo}
+                onComplete={() => handleScoreComplete(s.id)}
+              />
+            ))}
+
+            {/* Reset Text Overlay */}
+            {isProcessing && reshuffleCount > 0 && (
+              <View style={styles.resetOverlay}>
+                <Text style={styles.resetText}>RESET</Text>
+              </View>
+            )}
+          </Animated.View>
+        </View>
+
+        <StageResultModal
+          visible={(stageCleared || stageFailed) && !gameOver}
+          status={stageCleared ? 'clear' : 'fail'}
           score={score}
-          moves={moves}
-          highScore={highScore}
           targetScore={currentLevel.targetScore}
           lives={lives}
+          levelName={currentLevel.name}
+          onNext={startNextLevel}
+          onRetry={retryLevel}
         />
 
-        <Animated.View style={[styles.gameContainer, shakeStyle]}>
-          <ComboDisplay combo={combo} />
-          <Grid
-            grid={grid}
-            onSwipe={handleSwipeGesture}
-            selectedPosition={selectedPosition}
-            isProcessing={isProcessing}
-            matchPositions={recentMatches}
-            hintPositions={hintPositions}
-          />
-          {floatingScores.map((s) => (
-            <FloatingScore
-              key={s.id}
-              score={s.score}
-              position={s.position}
-              combo={s.combo}
-              onComplete={() => handleScoreComplete(s.id)}
-            />
-          ))}
-        </Animated.View>
-      </View>
+        <GameOverModal
+          visible={gameOver}
+          score={score}
+          highScore={highScore}
+          onRestart={resetRun}
+        />
+      </SafeAreaView>
 
-      <StageResultModal
-        visible={(stageCleared || stageFailed) && !gameOver}
-        status={stageCleared ? 'clear' : 'fail'}
-        score={score}
-        targetScore={currentLevel.targetScore}
-        lives={lives}
-        levelName={currentLevel.name}
-        onNext={startNextLevel}
-        onRetry={retryLevel}
-      />
-
-      <GameOverModal
-        visible={gameOver}
-        score={score}
-        highScore={highScore}
-        onRestart={resetRun}
-      />
-    </SafeAreaView>
+      {/* Loading Overlay - Outside SafeAreaView */}
+      {isLoading && (
+        <View style={styles.loadingOverlay}>
+          <Image source={require('../../assets/images/loading.png')} style={styles.loadingImage} resizeMode="contain" />
+        </View>
+      )}
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    // paddingVertical: 20, // Remove padding here as it's handled by SafeAreaView
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(255,255,255,0.3)',
+  },
+  safeArea: {
+    flex: 1,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+  },
+  backButton: {
+    width: 60,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 20,
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.5)',
+  },
+  backButtonText: {
+    fontSize: 16,
+    color: '#FFF',
+    fontWeight: 'bold',
+    letterSpacing: 1,
   },
   content: {
     flex: 1,
@@ -193,5 +308,39 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  resetOverlay: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -100 }, { translateY: -50 }],
+    width: 200,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    borderRadius: 20,
+    zIndex: 100,
+  },
+  resetText: {
+    color: '#FFF',
+    fontSize: 40,
+    fontWeight: 'bold',
+    letterSpacing: 4,
+  },
+  loadingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#FFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
+  },
+  loadingImage: {
+    width: 200,
+    height: 200,
   },
 });

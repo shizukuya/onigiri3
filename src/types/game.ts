@@ -10,7 +10,7 @@ export interface Position {
   col: number;
 }
 
-export type SpecialType = 'none' | 'bomb' | 'cross' | 'rainbow';
+export type SpecialType = 'none' | 'bomb' | 'dokan' | 'ring' | 'kesigomu';
 
 export interface Piece {
   type: PieceType;
@@ -58,5 +58,6 @@ export interface Level {
   moveLimit: number;
   pieceTypes?: number;
   background?: string;
+  bgm?: string; // New: Background music filename
   layout?: number[][]; // New: 0 = empty, 1 = block
 }

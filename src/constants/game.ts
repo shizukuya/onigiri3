@@ -11,11 +11,11 @@ export const GAME_CONFIG = {
 } as const;
 
 export const ANIMATION_DURATION = {
-  SWAP: 150, // Slightly faster swap
-  MATCH: 150, // Faster match disappear
-  FALL: 100, // Faster fall
-  COMBO_DISPLAY: 800, // Shorter combo display
-  PIECE_APPEAR: 150,
+  SWAP: 100, // Faster swap
+  MATCH: 120, // Faster match disappear
+  FALL: 80, // Faster fall
+  COMBO_DISPLAY: 700, // Shorter combo display
+  PIECE_APPEAR: 120,
 } as const;
 
 export const HAPTIC_FEEDBACK = {

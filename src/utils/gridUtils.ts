@@ -125,8 +125,20 @@ export const removeMatches = (grid: Grid, matches: Match[]): Grid => {
 
     if (!piece) continue;
 
-    // Special piece effects (Bomb, Cross)
+    // Special piece effects
     if (piece.special === 'bomb') {
+      // Bomb: Row + Col
+      for (let i = 0; i < GAME_CONFIG.GRID_SIZE; i++) {
+        addToRemove(row, i);
+        addToRemove(i, col);
+      }
+    } else if (piece.special === 'dokan') {
+      // Pipe: Column
+      for (let i = 0; i < GAME_CONFIG.GRID_SIZE; i++) {
+        addToRemove(i, col);
+      }
+    } else if (piece.special === 'ring') {
+      // Ring: Surrounding 3x3
       for (let r = row - 1; r <= row + 1; r++) {
         for (let c = col - 1; c <= col + 1; c++) {
           if (r >= 0 && r < GAME_CONFIG.GRID_SIZE && c >= 0 && c < GAME_CONFIG.GRID_SIZE) {
@@ -134,10 +146,10 @@ export const removeMatches = (grid: Grid, matches: Match[]): Grid => {
           }
         }
       }
-    } else if (piece.special === 'cross') {
+    } else if (piece.special === 'kesigomu') {
+      // Eraser: Row
       for (let i = 0; i < GAME_CONFIG.GRID_SIZE; i++) {
-        addToRemove(row, i); // Row
-        addToRemove(i, col); // Column
+        addToRemove(row, i);
       }
     }
   }
@@ -148,21 +160,7 @@ export const removeMatches = (grid: Grid, matches: Match[]): Grid => {
     (newGrid[r][c] as any) = null;
   });
 
-  // Spawn special pieces
-  matches.forEach(m => {
-    if (m.specialType !== 'none' && m.triggerPosition) {
-      const { row, col } = m.triggerPosition;
-      // Don't spawn on top of a block (shouldn't happen if logic is correct)
-      if (!newGrid[row][col]) {
-        newGrid[row][col] = {
-          type: m.type,
-          id: generatePieceId(),
-          special: m.specialType,
-          isBlock: false,
-        };
-      }
-    }
-  });
+  // Note: No spawning from matches anymore
 
   return newGrid;
 };
@@ -176,7 +174,6 @@ export const applyGravity = (grid: Grid): Grid => {
       const piece = newGrid[row][col];
       if (piece) {
         if (piece.isBlock) {
-          // Blocks don't fall, and they reset the emptyRow pointer
           emptyRow = row - 1;
         } else {
           if (row !== emptyRow) {
@@ -187,21 +184,35 @@ export const applyGravity = (grid: Grid): Grid => {
         }
       }
     }
+  }
+  return newGrid as Grid;
+};
 
-    // Fill remaining empty spaces
-    for (let row = emptyRow; row >= 0; row--) {
-      // Don't overwrite blocks (though loop logic should prevent this)
+export const fillEmptyPositions = (grid: Grid): Grid => {
+  const newGrid = grid.map(row => row.map(piece => (piece ? { ...piece } : null)));
+
+  for (let col = 0; col < GAME_CONFIG.GRID_SIZE; col++) {
+    for (let row = 0; row < GAME_CONFIG.GRID_SIZE; row++) {
       if (!newGrid[row][col]) {
+        // Spawn new piece with rarity logic
+        const rand = Math.random() * 100;
+        let special: any = 'none';
+
+        // S: Bomb (1%), A: Pipe (3%), B: Ring (5%), Eraser (5%)
+        if (rand < 1) special = 'bomb';
+        else if (rand < 4) special = 'dokan';
+        else if (rand < 9) special = 'ring';
+        else if (rand < 14) special = 'kesigomu';
+
         newGrid[row][col] = {
           type: getRandomPieceType(),
           id: generatePieceId(),
-          special: 'none',
+          special,
           isBlock: false,
         };
       }
     }
   }
-
   return newGrid as Grid;
 };
 

@@ -19,6 +19,10 @@ export const COLORS = {
   buttonSecondary: '#4ECDC4',
   buttonDisabled: '#6c757d',
 
+  // Brand Colors
+  primary: '#e94560',
+  secondary: '#4ECDC4',
+
   // ステータス色
   success: '#28a745',
   warning: '#ffc107',
