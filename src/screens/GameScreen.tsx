@@ -12,6 +12,7 @@ import Animated, {
   withTiming,
   withRepeat,
 } from 'react-native-reanimated';
+import { Ionicons } from '@expo/vector-icons';
 import { Header } from '../components/ui/Header';
 import { ScoreBoard } from '../components/game/ScoreBoard';
 import { Grid } from '../components/game/Grid';
@@ -26,6 +27,7 @@ import { COLORS } from '../constants/colors';
 import { saveGameData } from '../utils/storage';
 
 const { width } = Dimensions.get('window');
+const GRID_BOARD_SIZE = width - 8;
 
 interface GameScreenProps {
   onBack?: () => void;
@@ -127,6 +129,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
     setFloatingScores((prev) => prev.filter((s) => s.id !== id));
   };
 
+  const handleBackPress = () => {
+    if (onBack) {
+      onBack();
+    }
+  };
+
   const shakeStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -153,7 +161,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
     return () => {
       stopBgm();
     };
-  }, [currentLevel.bgm]); // Re-run if BGM changes
+  }, [currentLevel.bgm, playBgm, stopBgm]); // Re-run if BGM changes
 
   // Background Image Mapping
   const getBackgroundImage = (bgName?: string) => {
@@ -174,16 +182,19 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
       <View style={styles.overlay} />
 
       <SafeAreaView style={styles.safeArea}>
-        <View style={styles.content}>
-          <View style={styles.headerContainer}>
-            <TouchableOpacity style={styles.backButton} onPress={onBack}>
-              <Text style={styles.backButtonText}>TOP</Text>
+        <View style={styles.topHud}>
+          <View style={styles.topRow}>
+            <TouchableOpacity style={styles.navButton} onPress={handleBackPress} activeOpacity={0.85}>
+              <Ionicons name="chevron-back" size={18} color="#1a1a1a" />
+              <Text style={styles.navButtonText}>Title</Text>
             </TouchableOpacity>
-            <View style={{ flex: 1 }}>
-              <Header title={`Stage ${currentLevel.id}: ${currentLevel.name}`} />
-            </View>
-          </View>
 
+          </View>
+          <Header
+            title={currentLevel.name}
+            description={currentLevel.description}
+            badge={`Stage ${currentLevel.id}`}
+          />
           <ScoreBoard
             score={score}
             moves={moves}
@@ -191,10 +202,12 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
             targetScore={currentLevel.targetScore}
             lives={lives}
           />
+        </View>
 
-          <Animated.View style={[styles.gameContainer, shakeStyle]}>
-            <ComboDisplay combo={combo} />
-            <View style={{ width: width - 8, height: width - 8 }}>
+        <Animated.View style={[styles.gameContainer, shakeStyle]}>
+          <ComboDisplay combo={combo} />
+          <View style={styles.boardShell}>
+            <View style={styles.boardWrapper}>
               <Grid
                 grid={grid}
                 onSwipe={handleSwipeGesture}
@@ -212,26 +225,26 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
                   onComplete={() => removeSpecialEffect(effect.id)}
                 />
               ))}
+
+              {floatingScores.map((s) => (
+                <FloatingScore
+                  key={s.id}
+                  score={s.score}
+                  position={s.position}
+                  combo={s.combo}
+                  onComplete={() => handleScoreComplete(s.id)}
+                />
+              ))}
             </View>
+          </View>
 
-            {floatingScores.map((s) => (
-              <FloatingScore
-                key={s.id}
-                score={s.score}
-                position={s.position}
-                combo={s.combo}
-                onComplete={() => handleScoreComplete(s.id)}
-              />
-            ))}
-
-            {/* Reset Text Overlay */}
-            {isProcessing && reshuffleCount > 0 && (
-              <View style={styles.resetOverlay}>
-                <Text style={styles.resetText}>RESET</Text>
-              </View>
-            )}
-          </Animated.View>
-        </View>
+          {/* Reset Text Overlay */}
+          {isProcessing && reshuffleCount > 0 && (
+            <View style={styles.resetOverlay}>
+              <Text style={styles.resetText}>RESET</Text>
+            </View>
+          )}
+        </Animated.View>
 
         <StageResultModal
           visible={(stageCleared || stageFailed) && !gameOver}
@@ -265,49 +278,90 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    // paddingVertical: 20, // Remove padding here as it's handled by SafeAreaView
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: 'rgba(255,255,255,0.55)',
   },
   safeArea: {
     flex: 1,
+    paddingHorizontal: 18,
+    paddingBottom: 20,
   },
-  headerContainer: {
+  topHud: {
+    width: '100%',
+    gap: 14,
+    marginBottom: 12,
+  },
+  topRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
-  },
-  backButton: {
-    width: 60,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    borderRadius: 20,
-    marginRight: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.5)',
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: '#FFF',
-    fontWeight: 'bold',
-    letterSpacing: 1,
-  },
-  content: {
-    flex: 1,
-    alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 20,
+  },
+  navButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(255,255,255,0.95)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.05)',
+    shadowColor: COLORS.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+  },
+  navButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1a1a1a',
+  },
+  modeChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 999,
+    backgroundColor: '#FFAACF',
+    shadowColor: COLORS.shadow,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+  },
+  modeChipText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
   },
   gameContainer: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: 12,
+    paddingBottom: 30,
+  },
+  boardShell: {
+    padding: 14,
+    borderRadius: 40,
+    backgroundColor: 'rgba(255,255,255,0.4)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.6)',
+    shadowColor: COLORS.shadow,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.18,
+    shadowRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  boardWrapper: {
+    width: GRID_BOARD_SIZE,
+    height: GRID_BOARD_SIZE,
+    position: 'relative',
   },
   resetOverlay: {
     position: 'absolute',

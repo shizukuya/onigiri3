@@ -103,7 +103,6 @@ export const useGameLogic = () => {
     setStageCleared(false);
     setStageFailed(false);
     setReshuffleCount(0);
-    playBgm();
 
     // Short delay to ensure grid is rendered and assets are ready
     const timer = setTimeout(() => {
@@ -111,10 +110,9 @@ export const useGameLogic = () => {
     }, 1000);
 
     return () => {
-      stopBgm();
       clearTimeout(timer);
     };
-  }, [currentLevel, playBgm, stopBgm]);
+  }, [currentLevel]);
 
   // 目標スコア達成チェック
   useEffect(() => {

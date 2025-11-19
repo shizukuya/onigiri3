@@ -33,7 +33,7 @@ export const StageResultModal: React.FC<StageResultModalProps> = ({
   const isClear = status === 'clear';
   const title = isClear ? 'STAGE CLEAR!' : 'TRY AGAIN';
   const description = isClear
-    ? 'キャンディクラッシュのように次のステージへ進もう！'
+    ? '次のステージへ進もう！'
     : '手数が尽きました。もう一度挑戦しましょう。';
 
   return (

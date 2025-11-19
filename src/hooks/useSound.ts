@@ -20,9 +20,10 @@ const SOUND_MAP = {
   down: require('../../assets/sounds/down.mp3'),
 };
 
+// BGM_MAP - statically defined (React Native doesn't support dynamic require)
 const BGM_MAP: { [key: string]: any } = {
   'bgm_stage1.mp3': require('../../assets/sounds/bgm_stage1.mp3'),
-  // Add more BGMs here as they become available
+  'bgm_stage2.mp3': require('../../assets/sounds/bgm_stage2.mp3'),
 };
 
 export const useSound = () => {
@@ -94,6 +95,7 @@ export const useSound = () => {
       await bgmSound.stopAsync();
       await bgmSound.unloadAsync();
       setBgmSound(null);
+      setCurrentBgmName(null);
     }
   }, [bgmSound]);
 

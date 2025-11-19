@@ -49,7 +49,7 @@ export const LEVELS: Level[] = [
     moveLimit: 26,
     pieceTypes: 9,
     background: 'bg_stage2.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
