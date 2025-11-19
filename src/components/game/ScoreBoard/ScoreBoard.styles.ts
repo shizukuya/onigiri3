@@ -8,11 +8,11 @@ import { COLORS } from '../../../constants/colors';
 export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
   },
   scoreSection: {
     alignItems: 'center',
@@ -21,6 +21,14 @@ export const styles = StyleSheet.create({
   movesSection: {
     alignItems: 'center',
     flex: 1,
+  },
+  targetSection: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  livesSection: {
+    alignItems: 'center',
+    flex: 0.6,
   },
   highScoreSection: {
     position: 'absolute',
@@ -47,6 +55,18 @@ export const styles = StyleSheet.create({
   },
   movesWarning: {
     color: COLORS.warning,
+  },
+  targetValue: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: COLORS.textPrimary,
+    marginTop: 5,
+  },
+  livesValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: COLORS.textPrimary,
+    marginTop: 5,
   },
   highScoreLabel: {
     fontSize: 12,

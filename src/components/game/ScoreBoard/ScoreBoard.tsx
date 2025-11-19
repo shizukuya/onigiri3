@@ -10,12 +10,16 @@ interface ScoreBoardProps {
   score: number;
   moves: number;
   highScore: number;
+  targetScore: number;
+  lives: number;
 }
 
 export const ScoreBoard: React.FC<ScoreBoardProps> = ({
   score,
   moves,
   highScore,
+  targetScore,
+  lives,
 }) => {
   return (
     <View style={styles.container}>
@@ -29,6 +33,16 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
         <Text style={[styles.movesValue, moves <= 5 && styles.movesWarning]}>
           {moves}
         </Text>
+      </View>
+
+      <View style={styles.targetSection}>
+        <Text style={styles.label}>TARGET</Text>
+        <Text style={styles.targetValue}>{targetScore.toLocaleString()}</Text>
+      </View>
+
+      <View style={styles.livesSection}>
+        <Text style={styles.label}>LIVES</Text>
+        <Text style={styles.livesValue}>{lives}</Text>
       </View>
 
       {highScore > 0 && (

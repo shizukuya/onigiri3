@@ -279,3 +279,15 @@ ca-app-pub-3940256099942544/1712485313
 
 リワード広告: iOS(本番)
 ca-app-pub-5081824799734894/2248593691
+
+## 追加したステージ制・サウンド対応について
+
+- ステージ定義: `src/constants/levels.ts` で目標スコアや手数を設定（Candy Crush風）。
+- ライフ: 3回失敗でアウト。ステージ失敗時にライフが減少します。
+- サウンド: `expo-av` を使用。以下のファイル名で `assets/sounds/` に配置してください（現在はダミーを置いています）。
+  - `bgm_stage1.mp3`（ループBGM）
+  - `match_small.mp3`（3消） / `match_big.mp3`（5消以上・爆発系）
+  - `combo.mp3`（連鎖時）
+  - `swap_fail.mp3`（無効スワップ）
+  - `stage_clear.mp3` / `stage_fail.mp3` / `game_over.mp3`
+- ステージ背景用に `assets/` 直下へ `bg_stage1.png`, `bg_stage2.png`, `bg_stage3.png` などを配置すると演出が拡張しやすいです。

@@ -42,3 +42,13 @@ export interface AnimationConfig {
   duration: number;
   easing?: string;
 }
+
+export interface Level {
+  id: number;
+  name: string;
+  description?: string;
+  targetScore: number;
+  moveLimit: number;
+  pieceTypes?: number;
+  background?: string;
+}

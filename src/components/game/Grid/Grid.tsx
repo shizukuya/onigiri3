@@ -2,7 +2,7 @@
  * Gridコンポーネント - ゲームグリッド（スワイプジェスチャー対応）
  */
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { View, Dimensions } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { Piece } from '../Piece';
@@ -20,6 +20,8 @@ interface GridProps {
   onSwipe: (pos1: Position, pos2: Position) => void;
   selectedPosition: Position | null;
   isProcessing: boolean;
+  matchPositions?: Position[];
+  hintPositions?: Position[];
 }
 
 export const Grid: React.FC<GridProps> = ({
@@ -27,9 +29,19 @@ export const Grid: React.FC<GridProps> = ({
   onSwipe,
   selectedPosition,
   isProcessing,
+  matchPositions = [],
+  hintPositions = [],
 }) => {
   const pieceSize = BOARD_SIZE / GAME_CONFIG.GRID_SIZE;
   const swipeStartPos = useRef<Position | null>(null);
+  const matchSet = useMemo(
+    () => new Set(matchPositions.map((p) => `${p.row}-${p.col}`)),
+    [matchPositions]
+  );
+  const hintSet = useMemo(
+    () => new Set(hintPositions.map((p) => `${p.row}-${p.col}`)),
+    [hintPositions]
+  );
 
   const isSelected = (row: number, col: number): boolean => {
     if (!selectedPosition) return false;
@@ -123,6 +135,8 @@ export const Grid: React.FC<GridProps> = ({
                 type={piece.type}
                 size={pieceSize}
                 isSelected={isSelected(rowIndex, colIndex)}
+                shouldDisappear={matchSet.has(`${rowIndex}-${colIndex}`)}
+                isHint={hintSet.has(`${rowIndex}-${colIndex}`)}
               />
             ))}
           </View>

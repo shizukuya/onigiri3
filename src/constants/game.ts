@@ -7,6 +7,7 @@ export const GAME_CONFIG = {
   MIN_MATCH_COUNT: 3,
   BASE_SCORE_PER_PIECE: 10,
   INITIAL_MOVES: 30,
+  INITIAL_LIVES: 3,
 } as const;
 
 export const ANIMATION_DURATION = {

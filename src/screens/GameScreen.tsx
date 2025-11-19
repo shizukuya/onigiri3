@@ -9,8 +9,7 @@ import { Header } from '../components/ui/Header';
 import { ScoreBoard } from '../components/game/ScoreBoard';
 import { Grid } from '../components/game/Grid';
 import { ComboDisplay } from '../components/game/ComboDisplay';
-import { Button } from '../components/ui/Button';
-import { GameOverModal } from '../components/ui/Modal';
+import { GameOverModal, StageResultModal } from '../components/ui/Modal';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { Position } from '../types/game';
 import { COLORS } from '../constants/colors';
@@ -23,10 +22,17 @@ export const GameScreen: React.FC = () => {
     combo,
     isProcessing,
     gameOver,
+    stageCleared,
+    stageFailed,
+    currentLevel,
+    lives,
     highScore,
+    recentMatches,
+    hintPositions,
     handleSwap,
-    resetGame,
-    startNewGame,
+    retryLevel,
+    startNextLevel,
+    resetRun,
   } = useGameLogic();
 
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(
@@ -45,9 +51,15 @@ export const GameScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Header title="Match-3 Puzzle" />
+        <Header title={`Stage ${currentLevel.id}: ${currentLevel.name}`} />
 
-        <ScoreBoard score={score} moves={moves} highScore={highScore} />
+        <ScoreBoard
+          score={score}
+          moves={moves}
+          highScore={highScore}
+          targetScore={currentLevel.targetScore}
+          lives={lives}
+        />
 
         <View style={styles.gameContainer}>
           <ComboDisplay combo={combo} />
@@ -56,24 +68,29 @@ export const GameScreen: React.FC = () => {
             onSwipe={handleSwipeGesture}
             selectedPosition={selectedPosition}
             isProcessing={isProcessing}
+            matchPositions={recentMatches}
+            hintPositions={hintPositions}
           />
         </View>
 
-        <View style={styles.buttonContainer}>
-          <Button
-            title="RESET"
-            onPress={resetGame}
-            variant="secondary"
-            disabled={isProcessing}
-          />
-        </View>
       </View>
+
+      <StageResultModal
+        visible={(stageCleared || stageFailed) && !gameOver}
+        status={stageCleared ? 'clear' : 'fail'}
+        score={score}
+        targetScore={currentLevel.targetScore}
+        lives={lives}
+        levelName={currentLevel.name}
+        onNext={startNextLevel}
+        onRetry={retryLevel}
+      />
 
       <GameOverModal
         visible={gameOver}
         score={score}
         highScore={highScore}
-        onRestart={startNewGame}
+        onRestart={resetRun}
       />
     </SafeAreaView>
   );
@@ -94,9 +111,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  buttonContainer: {
-    marginTop: 20,
-    marginBottom: 20,
   },
 });
