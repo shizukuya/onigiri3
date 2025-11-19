@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "onigiri3",
+    "slug": "onigiri3",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.onigiri3.app"
+    },
+    "android": {
+      "package": "com.onigiri3.app"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npx expo start:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(npx expo install:*)",
+      "Bash(npm install:*)",
+      "WebSearch"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
