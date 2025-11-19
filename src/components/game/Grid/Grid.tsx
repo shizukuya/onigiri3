@@ -5,13 +5,14 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { View, Dimensions } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 import { Piece } from '../Piece';
 import { Grid as GridType, Position } from '../../../types/game';
 import { GAME_CONFIG } from '../../../constants/game';
 import { styles } from './Grid.styles';
 
 const { width } = Dimensions.get('window');
-const BOARD_PADDING = 20;
+const BOARD_PADDING = 4;
 const BOARD_SIZE = width - BOARD_PADDING * 2;
 const SWIPE_THRESHOLD = 30; // スワイプ検出の最小距離
 
@@ -119,6 +120,21 @@ export const Grid: React.FC<GridProps> = ({
     swipeStartPos.current = null;
   };
 
+  // Flatten grid for rendering with absolute positioning
+  const pieces = useMemo(() => {
+    const flattened = [];
+    for (let row = 0; row < GAME_CONFIG.GRID_SIZE; row++) {
+      for (let col = 0; col < GAME_CONFIG.GRID_SIZE; col++) {
+        flattened.push({
+          ...grid[row][col],
+          row,
+          col,
+        });
+      }
+    }
+    return flattened;
+  }, [grid]);
+
   return (
     <PanGestureHandler
       onBegan={handleGestureBegin}
@@ -127,19 +143,27 @@ export const Grid: React.FC<GridProps> = ({
       onFailed={() => { swipeStartPos.current = null; }}
     >
       <View style={[styles.board, { width: BOARD_SIZE, height: BOARD_SIZE }]}>
-        {grid.map((row, rowIndex) => (
-          <View key={`row-${rowIndex}`} style={styles.row}>
-            {row.map((piece, colIndex) => (
-              <Piece
-                key={piece.id}
-                type={piece.type}
-                size={pieceSize}
-                isSelected={isSelected(rowIndex, colIndex)}
-                shouldDisappear={matchSet.has(`${rowIndex}-${colIndex}`)}
-                isHint={hintSet.has(`${rowIndex}-${colIndex}`)}
-              />
-            ))}
-          </View>
+        {pieces.map((piece) => (
+          <Animated.View
+            key={piece.id}
+            layout={LinearTransition.springify().damping(15).stiffness(200)}
+            style={{
+              position: 'absolute',
+              top: piece.row * pieceSize,
+              left: piece.col * pieceSize,
+              width: pieceSize,
+              height: pieceSize,
+            }}
+          >
+            <Piece
+              type={piece.type}
+              size={pieceSize}
+              isSelected={isSelected(piece.row, piece.col)}
+              shouldDisappear={matchSet.has(`${piece.row}-${piece.col}`)}
+              isHint={hintSet.has(`${piece.row}-${piece.col}`)}
+              special={piece.special}
+            />
+          </Animated.View>
         ))}
       </View>
     </PanGestureHandler>

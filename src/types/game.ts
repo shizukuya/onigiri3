@@ -10,16 +10,23 @@ export interface Position {
   col: number;
 }
 
+export type SpecialType = 'none' | 'bomb' | 'cross' | 'rainbow';
+
 export interface Piece {
   type: PieceType;
   id: string;
+  special?: SpecialType;
+  isBlock?: boolean; // New: Obstacle block
 }
 
 export type Grid = Piece[][];
 
 export interface Match {
+  type: PieceType;
   positions: Position[];
   count: number;
+  specialType: SpecialType;
+  triggerPosition?: Position;
 }
 
 export interface GameState {
@@ -51,4 +58,5 @@ export interface Level {
   moveLimit: number;
   pieceTypes?: number;
   background?: string;
+  layout?: number[][]; // New: 0 = empty, 1 = block
 }

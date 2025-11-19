@@ -3,7 +3,7 @@
  */
 
 import { useState, useCallback, useEffect, useMemo } from 'react';
-import { Grid, Position, SwapResult, Level } from '../types/game';
+import { Grid, Position, SwapResult, Level, Match } from '../types/game';
 import { GAME_CONFIG, ANIMATION_DURATION } from '../constants/game';
 import {
   generateInitialGrid,
@@ -16,7 +16,7 @@ import { useHaptics } from './useHaptics';
 import { LEVELS } from '../constants/levels';
 import { useSound } from './useSound';
 
-const { BASE_SCORE_PER_PIECE } = GAME_CONFIG;
+const { BASE_SCORE_PER_PIECE, GRID_SIZE } = GAME_CONFIG;
 
 export const useGameLogic = () => {
   const haptics = useHaptics();
@@ -36,7 +36,7 @@ export const useGameLogic = () => {
   const [stageCleared, setStageCleared] = useState(false);
   const [stageFailed, setStageFailed] = useState(false);
   const [gameOver, setGameOver] = useState(false); // ライフが尽きた状態
-  const [lives, setLives] = useState(GAME_CONFIG.INITIAL_LIVES);
+  const [lives, setLives] = useState<number>(GAME_CONFIG.INITIAL_LIVES);
   const [highScore, setHighScore] = useState(0);
   const [recentMatches, setRecentMatches] = useState<Position[]>([]);
   const [hintPositions, setHintPositions] = useState<Position[]>([]);
@@ -73,7 +73,7 @@ export const useGameLogic = () => {
   );
 
   const ensurePlayableGrid = useCallback(
-    (baseGrid: Grid) => {
+    (baseGrid: Grid, playReshuffleSound: boolean = true) => {
       let candidate = baseGrid;
       let attempts = 0;
       let hint: Position[] = [];
@@ -86,9 +86,18 @@ export const useGameLogic = () => {
       }
 
       if (hint.length > 0) {
-        setGrid(candidate);
-        setHintPositions(hint);
-        setReshuffleCount(0);
+        if (attempts > 0 && playReshuffleSound) {
+          playEffect('reset');
+          setIsProcessing(true);
+          setTimeout(() => {
+            setGrid(candidate);
+            setReshuffleCount(0);
+            setIsProcessing(false);
+          }, 2000);
+        } else {
+          setGrid(candidate);
+          setReshuffleCount(0);
+        }
       } else {
         setReshuffleCount((prev) => {
           const next = prev + 1;
@@ -96,15 +105,38 @@ export const useGameLogic = () => {
             setGameOver(true);
           } else {
             const reshuffled = generateInitialGrid();
-            setGrid(reshuffled);
-            setHintPositions(findHint(reshuffled));
+            if (playReshuffleSound) {
+              playEffect('reset');
+              setIsProcessing(true);
+              setTimeout(() => {
+                setGrid(reshuffled);
+                setIsProcessing(false);
+              }, 2000);
+            } else {
+              setGrid(reshuffled);
+            }
           }
           return next;
         });
       }
     },
-    [findHint]
+    [findHint, playEffect]
   );
+
+  // Auto-hint timer
+  useEffect(() => {
+    if (isProcessing || gameOver || stageCleared || stageFailed) {
+      setHintPositions([]);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const hints = findHint(grid);
+      setHintPositions(hints);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [grid, isProcessing, gameOver, stageCleared, stageFailed, findHint]);
 
   // ステージ/ライフの初期化
   useEffect(() => {
@@ -117,7 +149,7 @@ export const useGameLogic = () => {
     setStageCleared(false);
     setStageFailed(false);
     setReshuffleCount(0);
-    ensurePlayableGrid(initial);
+    ensurePlayableGrid(initial, false); // Don't play sound on init
     playBgm();
     return () => {
       stopBgm();
@@ -127,12 +159,13 @@ export const useGameLogic = () => {
   // 目標スコア達成チェック
   useEffect(() => {
     if (stageCleared || stageFailed || gameOver) return;
-    if (score >= currentLevel.targetScore) {
+    // アニメーション処理中はクリア判定しない
+    if (!isProcessing && score >= currentLevel.targetScore) {
       setStageCleared(true);
       if (score > highScore) setHighScore(score);
       playEffect('stageClear');
     }
-  }, [score, currentLevel, stageCleared, stageFailed, highScore, gameOver, playEffect]);
+  }, [score, isProcessing, currentLevel, stageCleared, stageFailed, highScore, gameOver, playEffect]);
 
   // 手数切れチェック
   useEffect(() => {
@@ -169,22 +202,27 @@ export const useGameLogic = () => {
   const processMatches = useCallback(
     async (
       currentGrid: Grid,
-      currentCombo: number = 0
+      currentCombo: number = 0,
+      manualMatches?: Match[] // レインボーなどで手動生成されたマッチ
     ): Promise<{ grid: Grid; combo: number; matches: number }> => {
-      const matches = findMatches(currentGrid);
+
+      const matches = manualMatches || findMatches(currentGrid);
 
       if (matches.length === 0) {
         setRecentMatches([]);
         return { grid: currentGrid, combo: 0, matches: 0 };
       }
 
-      setRecentMatches(matches);
+      // 表示用に全削除位置を収集
+      const allMatchPositions: Position[] = [];
+      matches.forEach(m => allMatchPositions.push(...m.positions));
+      setRecentMatches(allMatchPositions);
 
       // ハプティックフィードバック
       if (currentCombo > 0) {
         haptics.heavy();
         playEffect('combo');
-      } else if (matches.length >= 5) {
+      } else if (allMatchPositions.length >= 5) {
         haptics.medium();
         playEffect('matchBig');
       } else {
@@ -194,7 +232,7 @@ export const useGameLogic = () => {
 
       // スコア加算（連鎖ボーナスあり）
       const comboMultiplier = currentCombo + 1;
-      const points = matches.length * BASE_SCORE_PER_PIECE * comboMultiplier;
+      const points = allMatchPositions.length * BASE_SCORE_PER_PIECE * comboMultiplier;
       setScore((prev) => prev + points);
       setCombo(comboMultiplier);
 
@@ -208,6 +246,7 @@ export const useGameLogic = () => {
 
       // 重力を適用
       const afterGravity = applyGravity(afterRemoval);
+      playEffect('down');
 
       // 落下時間分待機
       await new Promise((resolve) =>
@@ -237,11 +276,65 @@ export const useGameLogic = () => {
       setIsProcessing(true);
       haptics.selection();
 
-      // 入れ替え
+      // レインボーピースの判定
+      const piece1 = grid[pos1.row][pos1.col];
+      const piece2 = grid[pos2.row][pos2.col];
+      const isRainbow1 = piece1.special === 'rainbow';
+      const isRainbow2 = piece2.special === 'rainbow';
+
+      if (isRainbow1 || isRainbow2) {
+        setMoves((prev) => prev - 1);
+        let targetPositions: Position[] = [];
+        let rainbowPos = isRainbow1 ? pos1 : pos2;
+
+        if (isRainbow1 && isRainbow2) {
+          // ダブルレインボー: 全消し
+          for (let r = 0; r < GRID_SIZE; r++) {
+            for (let c = 0; c < GRID_SIZE; c++) {
+              targetPositions.push({ row: r, col: c });
+            }
+          }
+        } else {
+          // シングルレインボー: 色消し
+          const targetType = isRainbow1 ? piece2.type : piece1.type;
+          // レインボー自体も含める
+          targetPositions.push(rainbowPos);
+          for (let r = 0; r < GRID_SIZE; r++) {
+            for (let c = 0; c < GRID_SIZE; c++) {
+              if (grid[r][c].type === targetType) {
+                targetPositions.push({ row: r, col: c });
+              }
+            }
+          }
+        }
+
+        const rainbowMatch: Match = {
+          type: isRainbow1 ? piece2.type : piece1.type, // ダミータイプ
+          positions: targetPositions,
+          count: targetPositions.length,
+          specialType: 'none', // レインボー発動自体は新しいスペシャルピースを作らない
+          triggerPosition: rainbowPos
+        };
+
+        // レインボー処理実行
+        const result = await processMatches(grid, 0, [rainbowMatch]);
+        ensurePlayableGrid(result.grid);
+
+        setTimeout(() => {
+          setCombo(0);
+          setRecentMatches([]);
+        }, ANIMATION_DURATION.COMBO_DISPLAY);
+
+        setIsProcessing(false);
+        haptics.success();
+        return { success: true, matchCount: targetPositions.length, comboCount: result.combo };
+      }
+
+      // 通常の入れ替え処理
       let swappedGrid = swapPieces(grid, pos1, pos2);
 
-      // マッチがあるかチェック
-      const matches = findMatches(swappedGrid);
+      // マッチがあるかチェック (pos2をトリガー位置とする)
+      const matches = findMatches(swappedGrid, pos2);
 
       if (matches.length === 0) {
         // マッチがない場合は元に戻す
@@ -274,7 +367,7 @@ export const useGameLogic = () => {
         comboCount: result.combo,
       };
     },
-    [grid, isProcessing, gameOver, stageCleared, stageFailed, haptics, processMatches, playEffect]
+    [grid, isProcessing, gameOver, stageCleared, stageFailed, haptics, processMatches, playEffect, ensurePlayableGrid]
   );
 
   /**
@@ -282,8 +375,8 @@ export const useGameLogic = () => {
    */
   const retryLevel = useCallback(() => {
     if (gameOver) return;
-    const nextGrid = generateInitialGrid();
-    ensurePlayableGrid(nextGrid);
+    const nextGrid = generateInitialGrid(currentLevel.layout);
+    ensurePlayableGrid(nextGrid, false);
     setScore(0);
     setMoves(currentLevel.moveLimit);
     setCombo(0);
@@ -300,15 +393,8 @@ export const useGameLogic = () => {
     const nextIndex =
       levelIndex + 1 < LEVELS.length ? levelIndex + 1 : levelIndex;
     setLevelIndex(nextIndex);
-    const nextGrid = generateInitialGrid();
-    ensurePlayableGrid(nextGrid);
-    setScore(0);
-    setMoves(LEVELS[nextIndex].moveLimit);
-    setCombo(0);
-    setIsProcessing(false);
-    setStageCleared(false);
-    setStageFailed(false);
-  }, [levelIndex, ensurePlayableGrid]);
+    // Note: The useEffect will trigger on levelIndex change and handle grid generation
+  }, [levelIndex]);
 
   /**
    * ライフを全回復して最初から
@@ -316,16 +402,17 @@ export const useGameLogic = () => {
   const resetRun = useCallback(() => {
     setLives(GAME_CONFIG.INITIAL_LIVES);
     setLevelIndex(0);
-    const initGrid = generateInitialGrid();
-    ensurePlayableGrid(initGrid);
+    // Note: The useEffect will trigger on levelIndex change
     setScore(0);
     setMoves(LEVELS[0].moveLimit);
     setCombo(0);
     setIsProcessing(false);
     setStageCleared(false);
     setStageFailed(false);
+    setStageFailed(false);
     setGameOver(false);
-  }, [ensurePlayableGrid]);
+    playEffect('reset');
+  }, [playEffect]);
 
   return {
     grid,

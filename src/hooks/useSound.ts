@@ -14,6 +14,8 @@ const SOUND_MAP = {
   stageFail: require('../../assets/sounds/stage_fail.mp3'),
   gameOver: require('../../assets/sounds/game_over.mp3'),
   bgmStage: require('../../assets/sounds/bgm_stage1.mp3'),
+  down: require('../../assets/sounds/down.mp3'),
+  reset: require('../../assets/sounds/reset.mp3'),
 };
 
 type SoundKey = keyof typeof SOUND_MAP;
@@ -62,9 +64,11 @@ export const useSound = () => {
     stop(key);
   }, [stop]);
 
-  const playBgm = useCallback(() => {
+  const playBgm = useCallback(async () => {
+    const sound = await ensureLoaded('bgmStage');
+    await sound.setVolumeAsync(0.4);
     play('bgmStage', true);
-  }, [play]);
+  }, [play, ensureLoaded]);
 
   const stopBgm = useCallback(() => {
     stop('bgmStage');

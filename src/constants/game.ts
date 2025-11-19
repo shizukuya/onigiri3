@@ -3,7 +3,7 @@
  */
 
 export const GAME_CONFIG = {
-  GRID_SIZE: 8,
+  GRID_SIZE: 6,
   MIN_MATCH_COUNT: 3,
   BASE_SCORE_PER_PIECE: 10,
   INITIAL_MOVES: 30,
@@ -11,11 +11,11 @@ export const GAME_CONFIG = {
 } as const;
 
 export const ANIMATION_DURATION = {
-  SWAP: 100,
-  MATCH: 100,
-  FALL: 150,
-  COMBO_DISPLAY: 1000,
-  PIECE_APPEAR: 200,
+  SWAP: 150, // Slightly faster swap
+  MATCH: 150, // Faster match disappear
+  FALL: 100, // Faster fall
+  COMBO_DISPLAY: 800, // Shorter combo display
+  PIECE_APPEAR: 150,
 } as const;
 
 export const HAPTIC_FEEDBACK = {

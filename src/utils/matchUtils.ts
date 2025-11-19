@@ -2,68 +2,196 @@
  * マッチ検出に関するユーティリティ関数
  */
 
-import { Grid, Position, PieceType } from '../types/game';
+import { Grid, Position, PieceType, Match, SpecialType, Piece } from '../types/game';
 import { GAME_CONFIG } from '../constants/game';
 
 const { GRID_SIZE, MIN_MATCH_COUNT } = GAME_CONFIG;
 
+interface Segment {
+  type: PieceType;
+  positions: Position[];
+  direction: 'horizontal' | 'vertical';
+}
+
 /**
  * グリッド全体のマッチを検出
  */
-export const findMatches = (grid: Grid): Position[] => {
-  const matches = new Set<string>();
+export const findMatches = (grid: Grid, swapPos?: Position): Match[] => {
+  const segments: Segment[] = [];
 
-  // 横方向のマッチを検出
+  // Horizontal matches
   for (let row = 0; row < GRID_SIZE; row++) {
-    for (let col = 0; col < GRID_SIZE - (MIN_MATCH_COUNT - 1); col++) {
-      const type = grid[row]?.[col]?.type;
-      if (!type) continue;
+    let matchStart = 0;
+    let matchLength = 1;
+    let currentType: PieceType | undefined = grid[row][0]?.type;
 
-      let matchLength = 1;
-      for (let i = 1; i < GRID_SIZE - col; i++) {
-        if (grid[row]?.[col + i]?.type === type) {
-          matchLength++;
-        } else {
-          break;
+    for (let col = 1; col < GRID_SIZE; col++) {
+      const piece: Piece | undefined = grid[row][col];
+      // Ignore blocks and empty spaces
+      if (piece && !piece.isBlock && piece.type === currentType) {
+        matchLength++;
+      } else {
+        if (matchLength >= MIN_MATCH_COUNT && currentType) {
+          segments.push({
+            type: currentType,
+            positions: Array.from({ length: matchLength }, (_, i) => ({
+              row,
+              col: matchStart + i,
+            })),
+            direction: 'horizontal',
+          });
         }
+        matchStart = col;
+        matchLength = 1;
+        currentType = piece && !piece.isBlock ? piece.type : undefined;
       }
-
-      if (matchLength >= MIN_MATCH_COUNT) {
-        for (let i = 0; i < matchLength; i++) {
-          matches.add(`${row},${col + i}`);
-        }
-      }
+    }
+    if (matchLength >= MIN_MATCH_COUNT && currentType) {
+      segments.push({
+        type: currentType,
+        positions: Array.from({ length: matchLength }, (_, i) => ({
+          row,
+          col: matchStart + i,
+        })),
+        direction: 'horizontal',
+      });
     }
   }
 
-  // 縦方向のマッチを検出
+  // Vertical matches
   for (let col = 0; col < GRID_SIZE; col++) {
-    for (let row = 0; row < GRID_SIZE - (MIN_MATCH_COUNT - 1); row++) {
-      const type = grid[row]?.[col]?.type;
-      if (!type) continue;
+    let matchStart = 0;
+    let matchLength = 1;
+    let currentType: PieceType | undefined = grid[0][col]?.type;
 
-      let matchLength = 1;
-      for (let i = 1; i < GRID_SIZE - row; i++) {
-        if (grid[row + i]?.[col]?.type === type) {
-          matchLength++;
-        } else {
-          break;
+    for (let row = 1; row < GRID_SIZE; row++) {
+      const piece: Piece | undefined = grid[row][col];
+      // Ignore blocks and empty spaces
+      if (piece && !piece.isBlock && piece.type === currentType) {
+        matchLength++;
+      } else {
+        if (matchLength >= MIN_MATCH_COUNT && currentType) {
+          segments.push({
+            type: currentType,
+            positions: Array.from({ length: matchLength }, (_, i) => ({
+              row: matchStart + i,
+              col,
+            })),
+            direction: 'vertical',
+          });
         }
+        matchStart = row;
+        matchLength = 1;
+        currentType = piece && !piece.isBlock ? piece.type : undefined;
       }
-
-      if (matchLength >= MIN_MATCH_COUNT) {
-        for (let i = 0; i < matchLength; i++) {
-          matches.add(`${row + i},${col}`);
-        }
-      }
+    }
+    if (matchLength >= MIN_MATCH_COUNT && currentType) {
+      segments.push({
+        type: currentType,
+        positions: Array.from({ length: matchLength }, (_, i) => ({
+          row: matchStart + i,
+          col,
+        })),
+        direction: 'vertical',
+      });
     }
   }
 
-  // Set を Position[] に変換
-  return Array.from(matches).map((posStr) => {
-    const [row, col] = posStr.split(',').map(Number);
-    return { row, col };
-  });
+  // Group intersecting segments
+  const matches: Match[] = [];
+  const processedSegments = new Set<number>();
+
+  for (let i = 0; i < segments.length; i++) {
+    if (processedSegments.has(i)) continue;
+
+    const currentMatchSegments = [segments[i]];
+    processedSegments.add(i);
+
+    // Find all intersecting segments
+    let added = true;
+    while (added) {
+      added = false;
+      for (let j = 0; j < segments.length; j++) {
+        if (processedSegments.has(j)) continue;
+        if (segments[j].type !== segments[i].type) continue; // Only group segments of the same type
+
+        const isIntersecting = currentMatchSegments.some(seg1 =>
+          segments[j].positions.some(p2 =>
+            seg1.positions.some(p1 => p1.row === p2.row && p1.col === p2.col)
+          )
+        );
+
+        if (isIntersecting) {
+          currentMatchSegments.push(segments[j]);
+          processedSegments.add(j);
+          added = true;
+        }
+      }
+    }
+
+    // Determine match type and properties
+    const allPositions = currentMatchSegments.flatMap(s => s.positions);
+    const uniquePositions = Array.from(
+      new Set(allPositions.map(p => `${p.row},${p.col}`))
+    ).map(s => {
+      const [row, col] = s.split(',').map(Number);
+      return { row, col };
+    });
+
+    const type = currentMatchSegments[0].type;
+    let specialType: SpecialType = 'none';
+    let triggerPosition: Position = uniquePositions[0]; // Default to first position
+
+    // Check for Special Patterns
+    const isLTShape = currentMatchSegments.length >= 2; // Simple check for L/T shape (intersection)
+    const count = uniquePositions.length;
+
+    // Prioritize special types
+    const hasLine5 = currentMatchSegments.some(seg => seg.positions.length >= 5);
+    const hasLine4 = currentMatchSegments.some(seg => seg.positions.length === 4);
+
+    if (hasLine5) {
+      specialType = 'rainbow';
+    } else if (isLTShape) {
+      specialType = 'cross';
+    } else if (hasLine4) {
+      specialType = 'bomb';
+    }
+
+    // Determine trigger position (prioritize swap position or intersection)
+    if (swapPos && uniquePositions.some(p => p.row === swapPos.row && p.col === swapPos.col)) {
+      triggerPosition = swapPos;
+    } else if (isLTShape) {
+      // Find intersection point
+      const posCounts = new Map<string, number>();
+      currentMatchSegments.forEach(seg => {
+        seg.positions.forEach(p => {
+          const key = `${p.row},${p.col}`;
+          posCounts.set(key, (posCounts.get(key) || 0) + 1);
+        });
+      });
+      for (const [key, count] of posCounts.entries()) {
+        if (count > 1) {
+          const [r, c] = key.split(',').map(Number);
+          triggerPosition = { row: r, col: c };
+          break;
+        }
+      }
+    } else {
+      // Default to a central position or first if no specific trigger
+      triggerPosition = uniquePositions[Math.floor(uniquePositions.length / 2)];
+    }
+
+    matches.push({
+      type,
+      positions: uniquePositions,
+      count,
+      specialType,
+      triggerPosition,
+    });
+  }
+
+  return matches;
 };
 
 /**
