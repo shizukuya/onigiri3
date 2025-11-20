@@ -60,7 +60,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView style={styles.container}>
-        <StatusBar style="auto" hidden />
+        <StatusBar style="auto" />
         {renderScreen()}
       </GestureHandlerRootView>
     </SafeAreaProvider>

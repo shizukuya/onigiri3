@@ -191,7 +191,10 @@ export const useGameLogic = () => {
       // ハプティックフィードバック
       if (currentCombo > 0) {
         haptics.heavy();
-        playEffect('combo');
+        // Pitch scaling: 1.0 + (combo * 0.1)
+        // e.g. Combo 1 -> 1.1, Combo 2 -> 1.2
+        const pitch = Math.min(2.0, 1.0 + (currentCombo * 0.1));
+        playEffect('combo', { pitch });
       } else if (allMatchPositions.length >= 5) {
         haptics.medium();
         playEffect('matchBig');

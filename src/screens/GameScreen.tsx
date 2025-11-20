@@ -13,13 +13,13 @@ import Animated, {
   withRepeat,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
-import { GameStatusBar } from '../components/ui/StatusBar/GameStatusBar';
 import { Header } from '../components/ui/Header';
 import { ScoreBoard } from '../components/game/ScoreBoard';
 import { Grid } from '../components/game/Grid';
 import { ComboDisplay } from '../components/game/ComboDisplay';
 import { FloatingScore } from '../components/game/FloatingScore/FloatingScore';
 import { SpecialEffectOverlay } from '../components/game/SpecialEffect/SpecialEffectOverlay';
+import { ParticleOverlay } from '../components/game/Particles/ParticleOverlay';
 import { GameOverModal, StageResultModal } from '../components/ui/Modal';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { useSound } from '../hooks/useSound';
@@ -123,6 +123,20 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
     prevScore.current = score;
   }, [score, combo, recentMatches]);
 
+  // Particles State
+  const [particleEffects, setParticleEffects] = useState<{ id: string; positions: Position[] }[]>([]);
+
+  useEffect(() => {
+    if (recentMatches.length > 0) {
+      const id = Math.random().toString(36).substr(2, 9);
+      setParticleEffects(prev => [...prev, { id, positions: recentMatches }]);
+    }
+  }, [recentMatches]);
+
+  const handleParticleComplete = (id: string) => {
+    setParticleEffects((prev) => prev.filter((p) => p.id !== id));
+  };
+
   const handleSwipeGesture = async (pos1: Position, pos2: Position) => {
     if (isProcessing || gameOver) return;
 
@@ -189,7 +203,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
       <View style={styles.overlay} />
 
       <SafeAreaView style={styles.safeArea}>
-        <GameStatusBar />
         <View style={styles.topHud}>
           <View style={styles.topRow}>
             <TouchableOpacity style={styles.navButton} onPress={handleBackPress} activeOpacity={0.85}>
@@ -241,6 +254,15 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
                   position={s.position}
                   combo={s.combo}
                   onComplete={() => handleScoreComplete(s.id)}
+                />
+              ))}
+
+              {particleEffects.map((effect) => (
+                <ParticleOverlay
+                  key={effect.id}
+                  positions={effect.positions}
+                  gridSize={GRID_BOARD_SIZE}
+                  onComplete={() => handleParticleComplete(effect.id)}
                 />
               ))}
             </View>

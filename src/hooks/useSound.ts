@@ -39,7 +39,7 @@ export const useSound = () => {
     };
   }, [bgmSound]);
 
-  const playEffect = useCallback(async (name: keyof typeof SOUND_MAP) => {
+  const playEffect = useCallback(async (name: keyof typeof SOUND_MAP, options?: { pitch?: number }) => {
     try {
       // Check settings first
       const data = await loadGameData();
@@ -49,6 +49,11 @@ export const useSound = () => {
       // For now, just play.
 
       const { sound } = await Audio.Sound.createAsync(SOUND_MAP[name]);
+
+      if (options?.pitch) {
+        await sound.setRateAsync(options.pitch, false);
+      }
+
       await sound.playAsync();
 
       // Unload after playing

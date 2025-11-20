@@ -7,6 +7,7 @@ import {
     ScrollView,
     ImageBackground,
     Dimensions,
+    Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -20,6 +21,22 @@ interface StageSelectScreenProps {
     onSelectLevel: (levelId: number) => void;
     onBack: () => void;
 }
+
+const STAGE_ICONS = [
+    require('../../assets/char1.png'),
+    require('../../assets/char2.png'),
+    require('../../assets/char3.png'),
+    require('../../assets/char4.png'),
+    require('../../assets/char5.png'),
+    require('../../assets/char6.png'),
+    require('../../assets/char7.png'),
+    require('../../assets/char8.png'),
+    require('../../assets/char9.png'),
+    require('../../assets/images/bomb.png'),
+    require('../../assets/images/dokan.png'),
+    require('../../assets/images/ring.png'),
+    require('../../assets/images/kesigomu.png'),
+];
 
 export const StageSelectScreen: React.FC<StageSelectScreenProps> = ({
     onSelectLevel,
@@ -58,6 +75,7 @@ export const StageSelectScreen: React.FC<StageSelectScreenProps> = ({
                             // Other levels are unlocked if the PREVIOUS level has a high score > 0.
                             const prevLevelId = index > 0 ? LEVELS[index - 1].id : 0;
                             const isUnlocked = index === 0 || (highScores[prevLevelId] || 0) > 0;
+                            const iconSource = STAGE_ICONS[index % STAGE_ICONS.length];
 
                             return (
                                 <TouchableOpacity
@@ -73,16 +91,17 @@ export const StageSelectScreen: React.FC<StageSelectScreenProps> = ({
                                     }}
                                     disabled={!isUnlocked}
                                 >
+                                    {isUnlocked && (
+                                        <Image
+                                            source={iconSource}
+                                            style={styles.nodeImage}
+                                            resizeMode="contain"
+                                        />
+                                    )}
                                     <View style={styles.nodeContent}>
                                         {isUnlocked ? (
                                             <>
-                                                <Text style={styles.stageNumber}>{level.id}</Text>
-                                                <View style={styles.starsContainer}>
-                                                    {/* Placeholder for stars */}
-                                                    <Ionicons name="star" size={12} color="#FFD700" />
-                                                    <Ionicons name="star" size={12} color="#FFD700" />
-                                                    <Ionicons name="star" size={12} color="#FFD700" />
-                                                </View>
+                                                {/* <Text style={styles.stageNumber}>{level.id}</Text> */}
                                             </>
                                         ) : (
                                             <Ionicons name="lock-closed" size={24} color="rgba(255,255,255,0.5)" />
@@ -139,23 +158,26 @@ const styles = StyleSheet.create({
     stageNode: {
         width: 80,
         height: 80,
-        borderRadius: 40,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 10,
-        borderWidth: 2,
     },
     unlockedNode: {
-        backgroundColor: COLORS.primary,
-        borderColor: '#fff',
-        shadowColor: COLORS.primary,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.5,
-        shadowRadius: 8,
+        // No background or border for unlocked nodes (image only)
+        overflow: 'visible',
     },
     lockedNode: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        borderWidth: 2,
         backgroundColor: '#333',
         borderColor: '#555',
+    },
+    nodeImage: {
+        ...StyleSheet.absoluteFillObject,
+        width: '100%',
+        height: '100%',
     },
     nodeContent: {
         alignItems: 'center',
@@ -165,6 +187,9 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: '#fff',
+        textShadowColor: 'rgba(0, 0, 0, 0.8)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 3,
     },
     stageName: {
         position: 'absolute',

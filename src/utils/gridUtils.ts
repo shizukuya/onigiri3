@@ -212,11 +212,11 @@ export const fillEmptyPositions = (grid: Grid): Grid => {
         const rand = Math.random() * 100;
         let special: any = 'none';
 
-        // S: Bomb (1%), A: Pipe (3%), B: Ring (5%), Eraser (5%)
-        if (rand < 1) special = 'bomb';
-        else if (rand < 4) special = 'dokan';
-        else if (rand < 9) special = 'ring';
-        else if (rand < 14) special = 'kesigomu';
+        // S: Bomb (0.5%), A: Pipe (1%), B: Ring (1.5%), Eraser (2%) -> Total 5%
+        if (rand < 0.5) special = 'bomb';
+        else if (rand < 1.5) special = 'dokan';
+        else if (rand < 3.0) special = 'ring';
+        else if (rand < 5.0) special = 'kesigomu';
 
         newGrid[row][col] = {
           type: getRandomPieceType(),
