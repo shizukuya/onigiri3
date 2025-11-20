@@ -11,7 +11,7 @@ export interface Position {
   col: number;
 }
 
-export type SpecialType = 'none' | 'bomb' | 'dokan' | 'ring' | 'kesigomu';
+export type SpecialType = 'none' | 'bomb' | 'dokan' | 'ring' | 'kesigomu' | 'superpink';
 
 export interface Piece {
   type: PieceType;

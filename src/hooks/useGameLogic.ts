@@ -234,7 +234,7 @@ export const useGameLogic = () => {
 
       // 4. Wait for fall animation
       await new Promise((resolve) =>
-        setTimeout(resolve, ANIMATION_DURATION.FALL)
+        setTimeout(resolve, 300) // Wait for fall to finish (was ANIMATION_DURATION.FALL)
       );
 
       // 5. Fill Empty Spots (Spawn new pieces)
@@ -329,6 +329,11 @@ export const useGameLogic = () => {
           } else if (currentPiece.special === 'kesigomu') {
             playEffect('kesigomu');
             triggerSpecialEffect('kesigomu', currentPos);
+          } else if (currentPiece.special === 'superpink') {
+            playEffect('superpink');
+            playEffect('superpinkVoice');
+            // No visual effect trigger needed here as it's handled in gridUtils logic, 
+            // but we could add a screen shake or flash here if we had that capability exposed.
           }
 
           return {

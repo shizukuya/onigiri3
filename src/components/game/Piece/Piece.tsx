@@ -37,6 +37,7 @@ const SPECIAL_IMAGES: Record<string, any> = {
   dokan: require('../../../../assets/images/dokan.png'),
   ring: require('../../../../assets/images/ring.png'),
   kesigomu: require('../../../../assets/images/kesigomu.png'),
+  superpink: require('../../../../assets/images/superpink.png'),
 };
 
 interface ParticleProps {

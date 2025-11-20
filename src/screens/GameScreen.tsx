@@ -178,8 +178,18 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
 
   // BGM Control
   useEffect(() => {
-    playBgm(currentLevel.bgm);
+    let isActive = true;
+
+    const runBgmTransition = async () => {
+      await stopBgm();
+      if (!isActive) return;
+      await playBgm(currentLevel.bgm);
+    };
+
+    runBgmTransition();
+
     return () => {
+      isActive = false;
       stopBgm();
     };
   }, [currentLevel.bgm, playBgm, stopBgm]); // Re-run if BGM changes

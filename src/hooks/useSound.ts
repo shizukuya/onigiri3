@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
 import { loadGameData } from '../utils/storage';
 
@@ -18,6 +18,8 @@ const SOUND_MAP = {
   gameOver: require('../../assets/sounds/game_over.mp3'),
   reset: require('../../assets/sounds/reset.mp3'),
   down: require('../../assets/sounds/down.mp3'),
+  superpink: require('../../assets/sounds/superpink.mp3'),
+  superpinkVoice: require('../../assets/sounds/superpink-voice.mp3'),
 };
 
 // BGM_MAP - statically defined (React Native doesn't support dynamic require)
@@ -31,17 +33,19 @@ const BGM_MAP: { [key: string]: any } = {
 };
 
 export const useSound = () => {
-  const [bgmSound, setBgmSound] = useState<Audio.Sound | null>(null);
-  const [currentBgmName, setCurrentBgmName] = useState<string | null>(null);
+  const bgmSoundRef = useRef<Audio.Sound | null>(null);
+  const currentBgmNameRef = useRef<string | null>(null);
 
   // Cleanup sounds on unmount
   useEffect(() => {
     return () => {
-      if (bgmSound) {
-        bgmSound.unloadAsync();
+      if (bgmSoundRef.current) {
+        bgmSoundRef.current.unloadAsync();
+        bgmSoundRef.current = null;
+        currentBgmNameRef.current = null;
       }
     };
-  }, [bgmSound]);
+  }, []);
 
   const playEffect = useCallback(async (name: keyof typeof SOUND_MAP, options?: { pitch?: number }) => {
     try {
@@ -78,12 +82,14 @@ export const useSound = () => {
       if (!data.bgmEnabled) return;
 
       // If already playing the same BGM, do nothing
-      if (bgmSound && currentBgmName === bgmName) return;
+      if (bgmSoundRef.current && currentBgmNameRef.current === bgmName) return;
 
       // If playing different BGM, stop it
-      if (bgmSound) {
-        await bgmSound.stopAsync();
-        await bgmSound.unloadAsync();
+      if (bgmSoundRef.current) {
+        await bgmSoundRef.current.stopAsync();
+        await bgmSoundRef.current.unloadAsync();
+        bgmSoundRef.current = null;
+        currentBgmNameRef.current = null;
       }
 
       const source = BGM_MAP[bgmName] || BGM_MAP['bgm_stage1.mp3'];
@@ -91,22 +97,22 @@ export const useSound = () => {
         source,
         { isLooping: true, volume: 0.4 }
       );
-      setBgmSound(sound);
-      setCurrentBgmName(bgmName);
+      bgmSoundRef.current = sound;
+      currentBgmNameRef.current = bgmName;
       await sound.playAsync();
     } catch (error) {
       console.log('Failed to play BGM', error);
     }
-  }, [bgmSound, currentBgmName]);
+  }, []);
 
   const stopBgm = useCallback(async () => {
-    if (bgmSound) {
-      await bgmSound.stopAsync();
-      await bgmSound.unloadAsync();
-      setBgmSound(null);
-      setCurrentBgmName(null);
+    if (bgmSoundRef.current) {
+      await bgmSoundRef.current.stopAsync();
+      await bgmSoundRef.current.unloadAsync();
+      bgmSoundRef.current = null;
+      currentBgmNameRef.current = null;
     }
-  }, [bgmSound]);
+  }, []);
 
   return {
     playEffect,
