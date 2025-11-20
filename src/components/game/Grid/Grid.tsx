@@ -65,6 +65,8 @@ export const Grid: React.FC<GridProps> = ({
     if (isProcessing) return;
     const pos = getGridPosition(event.nativeEvent.x, event.nativeEvent.y);
     if (pos) {
+      const piece = grid[pos.row][pos.col];
+      if (piece.isBlock) return; // Cannot select/swipe blocks
       swipeStartPos.current = pos;
     }
   };
@@ -162,6 +164,7 @@ export const Grid: React.FC<GridProps> = ({
               shouldDisappear={matchSet.has(`${piece.row}-${piece.col}`)}
               isHint={hintSet.has(`${piece.row}-${piece.col}`)}
               special={piece.special}
+              isBlock={piece.isBlock}
             />
           </Animated.View>
         ))}

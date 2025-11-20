@@ -51,3 +51,18 @@ export const resetGameData = async () => {
         return DEFAULT_DATA;
     }
 };
+
+export const saveHighScore = async (levelId: number, score: number) => {
+    try {
+        const currentData = await loadGameData();
+        const currentHighScores = currentData.highScores || {};
+        const currentScore = currentHighScores[levelId] || 0;
+
+        if (score > currentScore) {
+            const newHighScores = { ...currentHighScores, [levelId]: score };
+            await saveGameData({ highScores: newHighScores });
+        }
+    } catch (error) {
+        console.error('Failed to save high score:', error);
+    }
+};

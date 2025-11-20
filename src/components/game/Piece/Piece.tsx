@@ -28,6 +28,7 @@ const PIECE_IMAGES: Record<PieceType, any> = {
   7: require('../../../../assets/char7.png'),
   8: require('../../../../assets/char8.png'),
   9: require('../../../../assets/char9.png'),
+  99: require('../../../../assets/images/block.png'), // Fallback/Type satisfaction
 };
 
 // Special Images
@@ -258,11 +259,17 @@ export const Piece: React.FC<PieceProps> = ({
 
         {/* Block Overlay */}
         {isBlock ? (
-          <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#666', borderRadius: 10 }}>
-            <View style={{ width: '80%', height: '80%', borderWidth: 2, borderColor: '#888', borderRadius: 4 }} />
-            <View style={{ position: 'absolute', width: '60%', height: 2, backgroundColor: '#444', transform: [{ rotate: '45deg' }] }} />
-            <View style={{ position: 'absolute', width: '60%', height: 2, backgroundColor: '#444', transform: [{ rotate: '-45deg' }] }} />
-          </View>
+          <Image
+            source={require('../../../../assets/images/block.png')}
+            style={[
+              styles.image,
+              {
+                width: size * 0.9,
+                height: size * 0.9,
+              }
+            ]}
+            resizeMode="contain"
+          />
         ) : (
           <Image
             source={special !== 'none' && SPECIAL_IMAGES[special] ? SPECIAL_IMAGES[special] : PIECE_IMAGES[type]}

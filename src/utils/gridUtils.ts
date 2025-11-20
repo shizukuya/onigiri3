@@ -2,7 +2,7 @@
  * グリッド操作に関するユーティリティ関数
  */
 
-import { Grid, Piece, Position, PieceType, PIECE_TYPES, Match } from '../types/game';
+import { Grid, Piece, Position, PieceType, PIECE_TYPES, Match, BLOCK_TYPE } from '../types/game';
 import { GAME_CONFIG } from '../constants/game';
 import { wouldCreateMatch } from './matchUtils';
 
@@ -36,7 +36,7 @@ export const generateInitialGrid = (layout?: number[][]): Grid => {
       // Check layout for blocks
       if (layout && layout[row] && layout[row][col] === 1) {
         currentRow.push({
-          type: 1, // Dummy type for block
+          type: 99, // BLOCK_TYPE
           id: generatePieceId(),
           special: 'none',
           isBlock: true,
@@ -160,7 +160,21 @@ export const removeMatches = (grid: Grid, matches: Match[]): Grid => {
     (newGrid[r][c] as any) = null;
   });
 
-  // Note: No spawning from matches anymore
+  // Spawn special pieces
+  matches.forEach(match => {
+    if (match.specialType !== 'none' && match.triggerPosition) {
+      const { row, col } = match.triggerPosition;
+      // Revive the piece at trigger position and transform it
+      // Ensure it's not null (it was just removed)
+      // We create a new piece there.
+      newGrid[row][col] = {
+        type: match.type,
+        id: generatePieceId(), // New ID to trigger animation? Or keep old? New is safer.
+        special: match.specialType,
+        isBlock: false,
+      };
+    }
+  });
 
   return newGrid;
 };

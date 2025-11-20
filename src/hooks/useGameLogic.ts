@@ -18,10 +18,23 @@ import { LEVELS } from '../constants/levels';
 import { useSound } from './useSound';
 
 const { BASE_SCORE_PER_PIECE, GRID_SIZE } = GAME_CONFIG;
+import { loadGameData } from '../utils/storage';
+
 export const useGameLogic = () => {
   const haptics = useHaptics();
   const { playEffect, playBgm, stopBgm } = useSound();
   const [levelIndex, setLevelIndex] = useState(0);
+
+  // Load saved level on mount
+  useEffect(() => {
+    const initLevel = async () => {
+      const data = await loadGameData();
+      if (data && typeof data.currentLevel === 'number') {
+        setLevelIndex(data.currentLevel);
+      }
+    };
+    initLevel();
+  }, []);
 
   const currentLevel: Level = useMemo(
     () => LEVELS[Math.min(levelIndex, LEVELS.length - 1)],
@@ -189,7 +202,18 @@ export const useGameLogic = () => {
 
       // スコア加算
       const comboMultiplier = currentCombo + 1;
-      const points = allMatchPositions.length * BASE_SCORE_PER_PIECE * comboMultiplier;
+      let points = allMatchPositions.length * BASE_SCORE_PER_PIECE * comboMultiplier;
+
+      // Special Item Bonus
+      matches.forEach(m => {
+        m.positions.forEach(pos => {
+          const piece = currentGrid[pos.row][pos.col];
+          if (piece.special && piece.special !== 'none') {
+            points += 50 * comboMultiplier; // Bonus for using a special item (Reduced from 100)
+          }
+        });
+      });
+
       setScore((prev) => prev + points);
       setCombo(comboMultiplier);
 

@@ -139,14 +139,45 @@ export const findMatches = (grid: Grid, swapPos?: Position): Match[] => {
     });
 
     const type = currentMatchSegments[0].type;
-    // No special generation from matches anymore
-    const specialType: SpecialType = 'none';
-    const triggerPosition: Position = uniquePositions[0];
+
+    // Determine special type based on shape
+    let specialType: SpecialType = 'none';
+    const isHorizontal = currentMatchSegments.some(s => s.direction === 'horizontal');
+    const isVertical = currentMatchSegments.some(s => s.direction === 'vertical');
+    const totalCount = uniquePositions.length;
+
+    if (isHorizontal && isVertical) {
+      // T or L shape -> Bomb
+      if (totalCount >= 5) {
+        specialType = 'bomb';
+      }
+    } else if (totalCount >= 5) {
+      // 5 in a row -> Ring (Rainbow)
+      specialType = 'ring';
+    } else if (totalCount === 4) {
+      // 4 in a row
+      if (isHorizontal) {
+        specialType = 'kesigomu'; // Horizontal 4 -> Eraser (Row clear)
+      } else {
+        specialType = 'dokan'; // Vertical 4 -> Pipe (Col clear)
+      }
+    }
+
+    // Trigger position is usually the last moved piece if available, or the first one.
+    // We don't have swapPos here easily, but we can default to the first one.
+    // If we want better UX, we should pass swapPos to findMatches and use it.
+    let triggerPosition: Position = uniquePositions[0];
+    if (swapPos) {
+      const swapMatch = uniquePositions.find(p => p.row === swapPos.row && p.col === swapPos.col);
+      if (swapMatch) {
+        triggerPosition = swapMatch;
+      }
+    }
 
     matches.push({
       type,
       positions: uniquePositions,
-      count: uniquePositions.length,
+      count: totalCount,
       specialType,
       triggerPosition,
     });

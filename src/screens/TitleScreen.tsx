@@ -7,12 +7,13 @@ const { width, height } = Dimensions.get('window');
 interface TitleScreenProps {
     onStart: () => void;
     onConfig: () => void;
+    onStageSelect: () => void;
 }
 
-export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart, onConfig }) => {
+export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart, onConfig, onStageSelect }) => {
     return (
         <ImageBackground
-            source={require('../../assets/images/bg_stage1.png')}
+            source={require('../../assets/images/top-bg.png')}
             style={styles.container}
             resizeMode="cover"
         >
@@ -25,6 +26,10 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart, onConfig }) =
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button} onPress={onStart}>
                         <Text style={styles.buttonText}>START</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={[styles.button, styles.mapButton]} onPress={onStageSelect}>
+                        <Text style={styles.buttonText}>STAGE MAP</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={[styles.button, styles.configButton]} onPress={onConfig}>
@@ -87,6 +92,9 @@ const styles = StyleSheet.create({
     },
     configButton: {
         backgroundColor: COLORS.secondary,
+    },
+    mapButton: {
+        backgroundColor: '#4A90E2', // Blue for map
     },
     buttonText: {
         color: '#FFFFFF',

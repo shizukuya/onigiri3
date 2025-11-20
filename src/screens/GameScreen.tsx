@@ -13,6 +13,7 @@ import Animated, {
   withRepeat,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
+import { GameStatusBar } from '../components/ui/StatusBar/GameStatusBar';
 import { Header } from '../components/ui/Header';
 import { ScoreBoard } from '../components/game/ScoreBoard';
 import { Grid } from '../components/game/Grid';
@@ -24,7 +25,7 @@ import { useGameLogic } from '../hooks/useGameLogic';
 import { useSound } from '../hooks/useSound';
 import { Position } from '../types/game';
 import { COLORS } from '../constants/colors';
-import { saveGameData } from '../utils/storage';
+import { saveGameData, saveHighScore } from '../utils/storage';
 
 const { width } = Dimensions.get('window');
 const GRID_BOARD_SIZE = width - 8;
@@ -62,11 +63,17 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
   const { playBgm, stopBgm } = useSound();
 
   // Save progress on stage clear
+  // Save progress on stage clear
   useEffect(() => {
-    if (stageCleared) {
-      saveGameData({ currentLevel: levelIndex + 1 });
-    }
-  }, [stageCleared, levelIndex]);
+    const saveProgress = async () => {
+      if (stageCleared && score >= currentLevel.targetScore) {
+        // Await sequentially to avoid race conditions in file storage
+        await saveGameData({ currentLevel: levelIndex + 1 });
+        await saveHighScore(currentLevel.id, score);
+      }
+    };
+    saveProgress();
+  }, [stageCleared, levelIndex, score, currentLevel.id, currentLevel.targetScore]);
 
   const [selectedPosition, setSelectedPosition] = useState<Position | null>(
     null
@@ -100,16 +107,16 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
 
       // Screen Shake for big matches or combos
       if (diff >= 100 || combo > 1) {
-        const intensity = Math.min(25, combo * 4 + (diff / 30)); // Increased intensity
+        const intensity = Math.min(10, combo * 2 + (diff / 50)); // Reduced intensity significantly
         shakeTranslateX.value = withSequence(
-          withTiming(intensity, { duration: 40 }),
-          withRepeat(withTiming(-intensity, { duration: 80 }), 5, true), // More shakes
-          withTiming(0, { duration: 40 })
+          withTiming(intensity, { duration: 50 }),
+          withRepeat(withTiming(-intensity, { duration: 100 }), 3, true), // Fewer shakes, slower
+          withTiming(0, { duration: 50 })
         );
         shakeTranslateY.value = withSequence(
-          withTiming(intensity, { duration: 40 }),
-          withRepeat(withTiming(-intensity, { duration: 80 }), 5, true), // More shakes
-          withTiming(0, { duration: 40 })
+          withTiming(intensity, { duration: 50 }),
+          withRepeat(withTiming(-intensity, { duration: 100 }), 3, true), // Fewer shakes, slower
+          withTiming(0, { duration: 50 })
         );
       }
     }
@@ -182,6 +189,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
       <View style={styles.overlay} />
 
       <SafeAreaView style={styles.safeArea}>
+        <GameStatusBar />
         <View style={styles.topHud}>
           <View style={styles.topRow}>
             <TouchableOpacity style={styles.navButton} onPress={handleBackPress} activeOpacity={0.85}>
