@@ -97,8 +97,6 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onBack }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: width,
-        height: height,
     },
     overlay: {
         flex: 1,

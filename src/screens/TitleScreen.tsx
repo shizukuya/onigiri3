@@ -20,7 +20,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart, onConfig, onS
             <View style={styles.overlay}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>Onigiri3</Text>
-                    <Text style={styles.subtitle}>Match-3 Puzzle</Text>
+                    <Text style={styles.subtitle}>おにぎりさん</Text>
                 </View>
 
                 <View style={styles.buttonContainer}>
@@ -44,8 +44,6 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart, onConfig, onS
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: width,
-        height: height,
     },
     overlay: {
         flex: 1,

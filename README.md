@@ -1,188 +1,79 @@
-# Match-3 パズルゲーム
+# Onigiri3 - Match-3 Puzzle Game
 
-React Native (Expo) と TypeScript で作成された、中毒性の高い Match-3 パズルゲームです。
+React Native (Expo) と TypeScript で作成された、中毒性の高い本格的な Match-3 パズルゲームです。
 
-## 特徴
+## ゲームのルールと仕様
 
-- **8x8 グリッド**: 広々としたゲームフィールド
-- **9種類のキャラクター**: カラフルで多様なピース
-- **連鎖システム**: 連続したマッチでコンボボーナス
-- **滑らかなアニメーション**: react-native-reanimated による 60fps のアニメーション
-- **ハプティックフィードバック**: 触覚フィードバックで没入感を向上
-- **爽快なエフェクト**: ピースの消滅、落下、スコアアップの演出
+### 基本ルール
+1.  **マッチング**: 隣り合う2つのピースをスワイプして入れ替えます。
+2.  **消去**: 縦または横に **3つ以上** 同じ種類のピースが揃うと消えます。
+3.  **連鎖 (Combo)**: 消えたピースの上から新しいピースが落下し、さらに揃うと連鎖が発生します。連鎖するほどスコア倍率が上がります。
+4.  **フリー移動**: マッチしなくてもピースを自由に動かすことができます（戦略的な配置が可能）。
+
+### 特殊アイテム (Special Items)
+4つ以上のピースを同時に消すと、強力な特殊アイテムが生成されます。
+
+| アイテム名 | 生成条件 | 効果 |
+| :--- | :--- | :--- |
+| **土管 (Pipe)** | 縦に4つ消す | **縦一列** を全て消去します。 |
+| **消しゴム (Eraser)** | 横に4つ消す | **横一列** を全て消去します。 |
+| **爆弾 (Bomb)** | T字またはL字に5つ消す | 周囲のピースを爆発させて消去します。 |
+| **リング (Ring)** | 一直線に5つ消す | **周囲3x3マス** を広範囲に消去します（レインボー効果）。 |
+
+*   **発動方法**: 特殊アイテムを隣のピースと入れ替える（スワイプする）だけで発動します。
+*   **自然発生**: ピース補充時に約5%の確率でランダムに特殊アイテムが降ってくることがあります。
+
+### ステージと難易度
+全100ステージ以上のレベル制です。
+
+*   **クリア条件**: 指定された「手数 (Move Limit)」以内に「目標スコア (Target Score)」を達成すること。
+*   **難易度カーブ**:
+    *   **Stage 1-10**: チュートリアル級（手数20回程度）
+    *   **Stage 11-40**: ノーマル（手数25-30回程度）
+    *   **Stage 41+**: ハード/ボス級（手数35-45回程度）
+    *   **ボスステージ**: 10ステージごとに少し手数の多いボスステージが登場します。
+*   **ライフ**: ステージ失敗時にライフが1つ減ります。ライフが0になるとゲームオーバーです。
+
+### スコアリング
+*   **基本スコア**: ピース1つにつき 10点
+*   **コンボボーナス**: (コンボ数 + 1) 倍のスコアが入ります。
+    *   例: 1コンボ目 (通常) = 1倍
+    *   2コンボ目 = 2倍
+    *   3コンボ目 = 3倍...
+*   **特殊アイテムボーナス**: 特殊アイテムで消したピースには追加ボーナスが入ります。
 
 ## 技術スタック
 
-- **React Native**: クロスプラットフォームモバイルアプリフレームワーク
-- **Expo**: React Native 開発ツール
-- **TypeScript**: 型安全性を確保
-- **react-native-reanimated**: 高性能なアニメーション
-- **react-native-gesture-handler**: ジェスチャー処理
-- **expo-haptics**: ハプティックフィードバック
+- **Core**: React Native, Expo
+- **Language**: TypeScript
+- **Animation**: react-native-reanimated (60fps smooth animations)
+- **Gesture**: react-native-gesture-handler
+- **Audio**: expo-av
+- **Haptics**: expo-haptics
 
 ## セットアップ
 
-### 前提条件
-
-- Node.js (v18 以上推奨)
-- npm または yarn
-- Expo CLI
-
 ### インストール
-
-1. 依存関係のインストール:
-
 ```bash
 npm install
 ```
 
-2. キャラクター画像の配置:
-
-   `assets` フォルダに以下の画像を配置してください：
-   - `char1.png` ~ `char9.png` (9種類のキャラクター画像)
-   - `icon.png`, `splash.png`, `adaptive-icon.png`, `favicon.png` (Expo アプリ用画像)
-
-   詳細は `assets/README.md` を参照してください。
-
-3. アプリの起動:
-
+### 実行
 ```bash
 npm start
 ```
-
-### 実行
-
-- **iOS シミュレータ**: `npm run ios`
-- **Android エミュレータ**: `npm run android`
-- **Web ブラウザ**: `npm run web`
-- **Expo Go アプリ**: QRコードをスキャン
-
-## ゲームの遊び方
-
-1. 隣り合う2つのピースをタップして選択
-2. 縦または横に3つ以上揃うとピースが消える
-3. 消えたピースの上にあるピースが落下
-4. 連鎖が発生するとコンボボーナスが加算される
-5. 高得点を目指そう！
+*   **iOS**: `npm run ios`
+*   **Android**: `npm run android`
 
 ## ファイル構成
-
 ```
-onigiri3/
-├── src/
-│   ├── components/        # UIコンポーネント
-│   │   ├── game/         # ゲーム関連コンポーネント
-│   │   │   ├── Piece/    # 個別ピース
-│   │   │   ├── Grid/     # グリッド
-│   │   │   ├── ScoreBoard/ # スコア表示
-│   │   │   └── ComboDisplay/ # コンボ表示
-│   │   └── ui/           # 汎用UI
-│   │       ├── Button/
-│   │       ├── Header/
-│   │       └── Modal/
-│   ├── hooks/            # カスタムフック
-│   │   ├── useGameLogic.ts
-│   │   └── useHaptics.ts
-│   ├── utils/            # ユーティリティ関数
-│   │   ├── gridUtils.ts
-│   │   └── matchUtils.ts
-│   ├── types/            # 型定義
-│   │   └── game.ts
-│   ├── constants/        # 定数
-│   │   ├── game.ts
-│   │   └── colors.ts
-│   └── screens/          # スクリーン
-│       └── GameScreen.tsx
-├── assets/               # 画像リソース
-├── App.tsx              # エントリーポイント
-├── package.json         # 依存関係
-├── tsconfig.json        # TypeScript設定
-├── babel.config.js      # Babel設定
-├── app.json            # Expo設定
-└── ARCHITECTURE.md     # アーキテクチャドキュメント
+src/
+├── components/   # UI & ゲームパーツ (Piece, Grid, ParticleOverlay)
+├── hooks/        # ロジック (useGameLogic, useSound)
+├── screens/      # 画面 (GameScreen, StageSelectScreen)
+├── constants/    # 定数 (levels.ts, game.ts)
+└── utils/        # 計算処理 (gridUtils.ts, matchUtils.ts)
 ```
-
-詳細なアーキテクチャについては `ARCHITECTURE.md` を参照してください。
-
-## カスタマイズ
-
-### グリッドサイズの変更
-
-`src/constants/game.ts` の `GRID_SIZE` 定数を変更してください。
-
-```typescript
-export const GAME_CONFIG = {
-  GRID_SIZE: 7, // 7x7 グリッドに変更
-  MIN_MATCH_COUNT: 3,
-  BASE_SCORE_PER_PIECE: 10,
-  INITIAL_MOVES: 30,
-} as const;
-```
-
-### キャラクター数の変更
-
-`src/types/game.ts` の `PIECE_TYPES` 配列を編集してください。
-
-```typescript
-export const PIECE_TYPES = [1, 2, 3, 4, 5, 6] as const; // 6種類に変更
-```
-
-対応する色とアイコンも `src/constants/colors.ts` で変更してください。
-
-### カラースキーム
-
-`src/constants/colors.ts` でアプリ全体のカラーテーマを変更できます。
-
-```typescript
-export const COLORS = {
-  background: '#1a1a2e',      // 背景色
-  boardBackground: '#16213e', // ボード背景色
-  textPrimary: '#ffffff',     // プライマリテキスト
-  textAccent: '#ffd700',      // アクセントテキスト
-  // ...
-};
-```
-
-## ライセンス
-
-ISC
-
-## 開発者向け情報
-
-### 主要な実装ポイント
-
-1. **連鎖検出**: `processMatches` 関数が再帰的に新しいマッチを検出
-2. **重力処理**: `applyGravity` 関数がピースを落下させ、新しいピースを生成
-3. **アニメーション**: `withSpring` と `withTiming` を使用した自然な動き
-4. **ハプティック**: 各アクションに応じた適切な振動フィードバック
-
-### パフォーマンス最適化
-
-- `useCallback` でメモ化された関数
-- `useSharedValue` による高速なアニメーション
-- 効率的な状態管理
-
-## トラブルシューティング
-
-### 画像が表示されない
-
-- `assets` フォルダに `char1.png` ~ `char9.png` が存在するか確認
-- 画像ファイル名が正確か確認
-- Expo を再起動してキャッシュをクリア
-
-### アニメーションがカクつく
-
-- Expo Go アプリではなく、開発ビルドまたはスタンドアロンアプリで実行
-- `babel.config.js` に `react-native-reanimated/plugin` が含まれているか確認
-
-## 今後の改善案
-
-- [ ] レベルシステムの追加
-- [ ] タイマーモードの実装
-- [ ] パワーアップアイテム（爆弾、レインボーピースなど）
-- [ ] ハイスコアの保存（AsyncStorage）
-- [ ] サウンドエフェクトと BGM
-- [ ] オンラインランキング
 
 ### npm install react-native-google-mobile-ads
 
@@ -279,15 +170,3 @@ ca-app-pub-3940256099942544/1712485313
 
 リワード広告: iOS(本番)
 ca-app-pub-5081824799734894/2248593691
-
-## 追加したステージ制・サウンド対応について
-
-- ステージ定義: `src/constants/levels.ts` で目標スコアや手数を設定（Candy Crush風）。
-- ライフ: 3回失敗でアウト。ステージ失敗時にライフが減少します。
-- サウンド: `expo-av` を使用。以下のファイル名で `assets/sounds/` に配置してください（現在はダミーを置いています）。
-  - `bgm_stage1.mp3`（ループBGM）
-  - `match_small.mp3`（3消） / `match_big.mp3`（5消以上・爆発系）
-  - `combo.mp3`（連鎖時）
-  - `swap_fail.mp3`（無効スワップ）
-  - `stage_clear.mp3` / `stage_fail.mp3` / `game_over.mp3`
-- ステージ背景用に `assets/` 直下へ `bg_stage1.png`, `bg_stage2.png`, `bg_stage3.png` などを配置すると演出が拡張しやすいです。

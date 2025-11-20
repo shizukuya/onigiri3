@@ -335,7 +335,7 @@ export const useGameLogic = () => {
             type: currentPiece.type,
             positions: [currentPos],
             count: 1,
-            specialType: currentPiece.special || 'none',
+            specialType: 'none', // Prevent respawning
             triggerPosition: currentPos
           };
         });
