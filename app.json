@@ -16,13 +16,21 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.onigiri3.app"
+      "bundleIdentifier": "com.onigiri3.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.onigiri3.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#fff"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6e1c45b0-2853-48c8-8e4c-03a6ee3345f8"
       }
     }
   }

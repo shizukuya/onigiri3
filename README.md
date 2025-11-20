@@ -100,7 +100,7 @@ eas build --platform android --local
 
 枠がない場合(開発)
 eas build --profile development --platform ios --local
-neas build --profile development --platform android --local
+eas build --profile development --platform android --local
 
 eas build -p android
 
