@@ -24,6 +24,10 @@ const SOUND_MAP = {
 const BGM_MAP: { [key: string]: any } = {
   'bgm_stage1.mp3': require('../../assets/sounds/bgm_stage1.mp3'),
   'bgm_stage2.mp3': require('../../assets/sounds/bgm_stage2.mp3'),
+  'bgm_stage3.mp3': require('../../assets/sounds/bgm_stage3.mp3'),
+  'bgm_stage4.mp3': require('../../assets/sounds/bgm_stage4.mp3'),
+  'bgm_stage5.mp3': require('../../assets/sounds/bgm_stage5.mp3'),
+  'bgm_stage6.mp3': require('../../assets/sounds/bgm_stage6.mp3'),
 };
 
 export const useSound = () => {

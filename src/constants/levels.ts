@@ -60,7 +60,7 @@ export const LEVELS: Level[] = [
     moveLimit: 40,
     pieceTypes: 9,
     background: 'bg_stage3.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -71,7 +71,7 @@ export const LEVELS: Level[] = [
     moveLimit: 45,
     pieceTypes: 9,
     background: 'bg_stage4.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -82,7 +82,7 @@ export const LEVELS: Level[] = [
     moveLimit: 50,
     pieceTypes: 9,
     background: 'bg_stage5.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -93,7 +93,7 @@ export const LEVELS: Level[] = [
     moveLimit: 55,
     pieceTypes: 9,
     background: 'bg_stage6.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -115,7 +115,7 @@ export const LEVELS: Level[] = [
     moveLimit: 65,
     pieceTypes: 9,
     background: 'bg_stage8.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -126,7 +126,7 @@ export const LEVELS: Level[] = [
     moveLimit: 70,
     pieceTypes: 9,
     background: 'bg_stage9.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -137,7 +137,7 @@ export const LEVELS: Level[] = [
     moveLimit: 75,
     pieceTypes: 9,
     background: 'bg_stage10.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -148,7 +148,7 @@ export const LEVELS: Level[] = [
     moveLimit: 80,
     pieceTypes: 9,
     background: 'bg_stage11.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -159,7 +159,7 @@ export const LEVELS: Level[] = [
     moveLimit: 85,
     pieceTypes: 9,
     background: 'bg_stage12.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -181,7 +181,7 @@ export const LEVELS: Level[] = [
     moveLimit: 95,
     pieceTypes: 9,
     background: 'bg_stage14.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -192,7 +192,7 @@ export const LEVELS: Level[] = [
     moveLimit: 100,
     pieceTypes: 9,
     background: 'bg_stage15.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -203,7 +203,7 @@ export const LEVELS: Level[] = [
     moveLimit: 105,
     pieceTypes: 9,
     background: 'bg_stage16.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -214,7 +214,7 @@ export const LEVELS: Level[] = [
     moveLimit: 110,
     pieceTypes: 9,
     background: 'bg_stage17.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -225,7 +225,7 @@ export const LEVELS: Level[] = [
     moveLimit: 115,
     pieceTypes: 9,
     background: 'bg_stage18.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -247,7 +247,7 @@ export const LEVELS: Level[] = [
     moveLimit: 125,
     pieceTypes: 9,
     background: 'bg_stage20.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -258,7 +258,7 @@ export const LEVELS: Level[] = [
     moveLimit: 130,
     pieceTypes: 9,
     background: 'bg_stage21.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -269,7 +269,7 @@ export const LEVELS: Level[] = [
     moveLimit: 135,
     pieceTypes: 9,
     background: 'bg_stage22.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -280,7 +280,7 @@ export const LEVELS: Level[] = [
     moveLimit: 140,
     pieceTypes: 9,
     background: 'bg_stage23.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -291,7 +291,7 @@ export const LEVELS: Level[] = [
     moveLimit: 145,
     pieceTypes: 9,
     background: 'bg_stage24.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -313,7 +313,7 @@ export const LEVELS: Level[] = [
     moveLimit: 155,
     pieceTypes: 9,
     background: 'bg_stage26.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -324,7 +324,7 @@ export const LEVELS: Level[] = [
     moveLimit: 160,
     pieceTypes: 9,
     background: 'bg_stage27.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -335,7 +335,7 @@ export const LEVELS: Level[] = [
     moveLimit: 165,
     pieceTypes: 9,
     background: 'bg_stage28.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -346,7 +346,7 @@ export const LEVELS: Level[] = [
     moveLimit: 170,
     pieceTypes: 9,
     background: 'bg_stage29.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -357,7 +357,7 @@ export const LEVELS: Level[] = [
     moveLimit: 175,
     pieceTypes: 9,
     background: 'bg_stage30.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -379,7 +379,7 @@ export const LEVELS: Level[] = [
     moveLimit: 185,
     pieceTypes: 9,
     background: 'bg_stage32.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -390,7 +390,7 @@ export const LEVELS: Level[] = [
     moveLimit: 190,
     pieceTypes: 9,
     background: 'bg_stage33.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -401,7 +401,7 @@ export const LEVELS: Level[] = [
     moveLimit: 195,
     pieceTypes: 9,
     background: 'bg_stage34.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -412,7 +412,7 @@ export const LEVELS: Level[] = [
     moveLimit: 200,
     pieceTypes: 9,
     background: 'bg_stage35.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -423,7 +423,7 @@ export const LEVELS: Level[] = [
     moveLimit: 205,
     pieceTypes: 9,
     background: 'bg_stage36.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -445,7 +445,7 @@ export const LEVELS: Level[] = [
     moveLimit: 215,
     pieceTypes: 9,
     background: 'bg_stage38.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -456,7 +456,7 @@ export const LEVELS: Level[] = [
     moveLimit: 220,
     pieceTypes: 9,
     background: 'bg_stage39.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -467,7 +467,7 @@ export const LEVELS: Level[] = [
     moveLimit: 225,
     pieceTypes: 9,
     background: 'bg_stage40.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -478,7 +478,7 @@ export const LEVELS: Level[] = [
     moveLimit: 230,
     pieceTypes: 9,
     background: 'bg_stage41.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -489,7 +489,7 @@ export const LEVELS: Level[] = [
     moveLimit: 235,
     pieceTypes: 9,
     background: 'bg_stage42.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -511,7 +511,7 @@ export const LEVELS: Level[] = [
     moveLimit: 245,
     pieceTypes: 9,
     background: 'bg_stage44.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -522,7 +522,7 @@ export const LEVELS: Level[] = [
     moveLimit: 250,
     pieceTypes: 9,
     background: 'bg_stage45.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -533,7 +533,7 @@ export const LEVELS: Level[] = [
     moveLimit: 255,
     pieceTypes: 9,
     background: 'bg_stage46.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -544,7 +544,7 @@ export const LEVELS: Level[] = [
     moveLimit: 260,
     pieceTypes: 9,
     background: 'bg_stage47.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -555,7 +555,7 @@ export const LEVELS: Level[] = [
     moveLimit: 265,
     pieceTypes: 9,
     background: 'bg_stage48.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -577,7 +577,7 @@ export const LEVELS: Level[] = [
     moveLimit: 275,
     pieceTypes: 9,
     background: 'bg_stage50.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -588,7 +588,7 @@ export const LEVELS: Level[] = [
     moveLimit: 280,
     pieceTypes: 9,
     background: 'bg_stage51.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -599,7 +599,7 @@ export const LEVELS: Level[] = [
     moveLimit: 285,
     pieceTypes: 9,
     background: 'bg_stage52.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -610,7 +610,7 @@ export const LEVELS: Level[] = [
     moveLimit: 290,
     pieceTypes: 9,
     background: 'bg_stage53.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -621,7 +621,7 @@ export const LEVELS: Level[] = [
     moveLimit: 295,
     pieceTypes: 9,
     background: 'bg_stage54.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -643,7 +643,7 @@ export const LEVELS: Level[] = [
     moveLimit: 305,
     pieceTypes: 9,
     background: 'bg_stage56.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -654,7 +654,7 @@ export const LEVELS: Level[] = [
     moveLimit: 310,
     pieceTypes: 9,
     background: 'bg_stage57.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -665,7 +665,7 @@ export const LEVELS: Level[] = [
     moveLimit: 315,
     pieceTypes: 9,
     background: 'bg_stage58.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -676,7 +676,7 @@ export const LEVELS: Level[] = [
     moveLimit: 320,
     pieceTypes: 9,
     background: 'bg_stage59.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -687,7 +687,7 @@ export const LEVELS: Level[] = [
     moveLimit: 325,
     pieceTypes: 9,
     background: 'bg_stage60.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -709,7 +709,7 @@ export const LEVELS: Level[] = [
     moveLimit: 335,
     pieceTypes: 9,
     background: 'bg_stage62.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -720,7 +720,7 @@ export const LEVELS: Level[] = [
     moveLimit: 340,
     pieceTypes: 9,
     background: 'bg_stage63.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -731,7 +731,7 @@ export const LEVELS: Level[] = [
     moveLimit: 345,
     pieceTypes: 9,
     background: 'bg_stage64.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -742,7 +742,7 @@ export const LEVELS: Level[] = [
     moveLimit: 350,
     pieceTypes: 9,
     background: 'bg_stage65.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -753,7 +753,7 @@ export const LEVELS: Level[] = [
     moveLimit: 355,
     pieceTypes: 9,
     background: 'bg_stage66.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -775,7 +775,7 @@ export const LEVELS: Level[] = [
     moveLimit: 365,
     pieceTypes: 9,
     background: 'bg_stage68.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -786,7 +786,7 @@ export const LEVELS: Level[] = [
     moveLimit: 370,
     pieceTypes: 9,
     background: 'bg_stage69.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -797,7 +797,7 @@ export const LEVELS: Level[] = [
     moveLimit: 375,
     pieceTypes: 9,
     background: 'bg_stage70.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -808,7 +808,7 @@ export const LEVELS: Level[] = [
     moveLimit: 380,
     pieceTypes: 9,
     background: 'bg_stage71.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -819,7 +819,7 @@ export const LEVELS: Level[] = [
     moveLimit: 385,
     pieceTypes: 9,
     background: 'bg_stage72.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -841,7 +841,7 @@ export const LEVELS: Level[] = [
     moveLimit: 395,
     pieceTypes: 9,
     background: 'bg_stage74.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -852,7 +852,7 @@ export const LEVELS: Level[] = [
     moveLimit: 400,
     pieceTypes: 9,
     background: 'bg_stage75.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -863,7 +863,7 @@ export const LEVELS: Level[] = [
     moveLimit: 405,
     pieceTypes: 9,
     background: 'bg_stage76.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -874,7 +874,7 @@ export const LEVELS: Level[] = [
     moveLimit: 410,
     pieceTypes: 9,
     background: 'bg_stage77.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -885,7 +885,7 @@ export const LEVELS: Level[] = [
     moveLimit: 415,
     pieceTypes: 9,
     background: 'bg_stage78.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -907,7 +907,7 @@ export const LEVELS: Level[] = [
     moveLimit: 425,
     pieceTypes: 9,
     background: 'bg_stage80.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -918,7 +918,7 @@ export const LEVELS: Level[] = [
     moveLimit: 430,
     pieceTypes: 9,
     background: 'bg_stage81.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -929,7 +929,7 @@ export const LEVELS: Level[] = [
     moveLimit: 435,
     pieceTypes: 9,
     background: 'bg_stage82.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -940,7 +940,7 @@ export const LEVELS: Level[] = [
     moveLimit: 440,
     pieceTypes: 9,
     background: 'bg_stage83.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -951,7 +951,7 @@ export const LEVELS: Level[] = [
     moveLimit: 445,
     pieceTypes: 9,
     background: 'bg_stage84.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -973,7 +973,7 @@ export const LEVELS: Level[] = [
     moveLimit: 455,
     pieceTypes: 9,
     background: 'bg_stage86.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -984,7 +984,7 @@ export const LEVELS: Level[] = [
     moveLimit: 460,
     pieceTypes: 9,
     background: 'bg_stage87.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -995,7 +995,7 @@ export const LEVELS: Level[] = [
     moveLimit: 465,
     pieceTypes: 9,
     background: 'bg_stage88.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -1006,7 +1006,7 @@ export const LEVELS: Level[] = [
     moveLimit: 470,
     pieceTypes: 9,
     background: 'bg_stage89.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -1017,7 +1017,7 @@ export const LEVELS: Level[] = [
     moveLimit: 475,
     pieceTypes: 9,
     background: 'bg_stage90.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -1039,7 +1039,7 @@ export const LEVELS: Level[] = [
     moveLimit: 485,
     pieceTypes: 9,
     background: 'bg_stage92.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -1050,7 +1050,7 @@ export const LEVELS: Level[] = [
     moveLimit: 490,
     pieceTypes: 9,
     background: 'bg_stage93.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -1061,7 +1061,7 @@ export const LEVELS: Level[] = [
     moveLimit: 495,
     pieceTypes: 9,
     background: 'bg_stage94.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
   {
@@ -1072,7 +1072,7 @@ export const LEVELS: Level[] = [
     moveLimit: 500,
     pieceTypes: 9,
     background: 'bg_stage95.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage5.mp3',
     layout: createWallLayout(),
   },
   {
@@ -1083,7 +1083,7 @@ export const LEVELS: Level[] = [
     moveLimit: 505,
     pieceTypes: 9,
     background: 'bg_stage96.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage6.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -1105,7 +1105,7 @@ export const LEVELS: Level[] = [
     moveLimit: 515,
     pieceTypes: 9,
     background: 'bg_stage98.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage2.mp3',
     layout: createWallLayout(),
   },
   {
@@ -1116,7 +1116,7 @@ export const LEVELS: Level[] = [
     moveLimit: 520,
     pieceTypes: 9,
     background: 'bg_stage99.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage3.mp3',
     layout: createEmptyLayout(),
   },
   {
@@ -1127,7 +1127,7 @@ export const LEVELS: Level[] = [
     moveLimit: 525,
     pieceTypes: 9,
     background: 'bg_stage100.png',
-    bgm: 'bgm_stage1.mp3',
+    bgm: 'bgm_stage4.mp3',
     layout: createCornersLayout(),
   },
 ];
