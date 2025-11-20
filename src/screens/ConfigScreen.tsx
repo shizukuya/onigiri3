@@ -25,7 +25,7 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onBack }) => {
 
     return (
         <ImageBackground
-            source={require('../../assets/images/bg_stage1.png')}
+            source={require('../../assets/images/config-bg.png')}
             style={styles.container}
             resizeMode="cover"
         >

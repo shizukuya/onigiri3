@@ -32,7 +32,7 @@ const createCornersLayout = (): number[][] => {
 export const LEVELS: Level[] = [
   {
     id: 1,
-    name: 'キャンディ平原',
+    name: 'TAMAGO',
     description: '基本ステージ。目標スコアを達成してみよう。',
     targetScore: 1000,
     moveLimit: 20,
@@ -43,7 +43,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 2,
-    name: 'シュガー洞窟',
+    name: 'SHAKE',
     description: '壁が邪魔をしているぞ。隣で消して壊そう!',
     targetScore: 1100,
     moveLimit: 20,
@@ -54,7 +54,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 3,
-    name: 'キャラメル崖',
+    name: 'UME',
     description: '四隅が埋まっている。中央でコンボを狙え!',
     targetScore: 1100,
     moveLimit: 20,
@@ -65,7 +65,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 4,
-    name: 'Stage 4',
+    name: 'OKAKA',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1100,
     moveLimit: 20,
@@ -76,7 +76,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 5,
-    name: 'Stage 5',
+    name: 'KONBU',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1200,
     moveLimit: 20,
@@ -87,7 +87,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 6,
-    name: 'Stage 6',
+    name: 'TARAKO',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1500,
     moveLimit: 25,
@@ -98,7 +98,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 7,
-    name: 'Stage 7',
+    name: 'TSUNA MAYO',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1500,
     moveLimit: 25,
@@ -109,7 +109,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 8,
-    name: 'Stage 8',
+    name: 'IKURA',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1600,
     moveLimit: 25,
@@ -120,7 +120,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 9,
-    name: 'Stage 9',
+    name: 'MENTAIKO',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1600,
     moveLimit: 25,
@@ -131,7 +131,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 10,
-    name: 'Stage 10',
+    name: 'NEGITORO',
     description: 'ボス級の難易度だ!慎重にいこう。',
     targetScore: 2000,
     moveLimit: 30,
@@ -142,7 +142,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 11,
-    name: 'Stage 11',
+    name: 'EBIMAYON',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1700,
     moveLimit: 25,
@@ -153,7 +153,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 12,
-    name: 'Stage 12',
+    name: 'KARAAGE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1700,
     moveLimit: 25,
@@ -164,7 +164,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 13,
-    name: 'Stage 13',
+    name: 'NIKU MISO',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1700,
     moveLimit: 25,
@@ -175,7 +175,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 14,
-    name: 'Stage 14',
+    name: 'TENMUSU',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1800,
     moveLimit: 25,
@@ -186,7 +186,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 15,
-    name: 'Stage 15',
+    name: 'TAKANA',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1800,
     moveLimit: 25,
@@ -197,7 +197,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 16,
-    name: 'Stage 16',
+    name: 'WAKAME',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1900,
     moveLimit: 25,
@@ -208,7 +208,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 17,
-    name: 'Stage 17',
+    name: 'SAKE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1900,
     moveLimit: 25,
@@ -219,7 +219,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 18,
-    name: 'Stage 18',
+    name: 'SHIO MUSUBI',
     description: 'どんどん難しくなるぞ!',
     targetScore: 1900,
     moveLimit: 25,
@@ -230,7 +230,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 19,
-    name: 'Stage 19',
+    name: 'YUKARI',
     description: 'どんどん難しくなるぞ!',
     targetScore: 2000,
     moveLimit: 25,
@@ -241,7 +241,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 20,
-    name: 'Stage 20',
+    name: 'KATSUOBUSHI',
     description: 'ボス級の難易度だ!慎重にいこう。',
     targetScore: 2400,
     moveLimit: 30,
@@ -252,7 +252,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 21,
-    name: 'Stage 21',
+    name: 'NORI',
     description: 'どんどん難しくなるぞ!',
     targetScore: 2400,
     moveLimit: 30,
@@ -263,7 +263,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 22,
-    name: 'Stage 22',
+    name: 'SHISO',
     description: 'どんどん難しくなるぞ!',
     targetScore: 2500,
     moveLimit: 30,
@@ -274,7 +274,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 23,
-    name: 'Stage 23',
+    name: 'GOMA SHIO',
     description: 'どんどん難しくなるぞ!',
     targetScore: 2500,
     moveLimit: 30,
@@ -285,7 +285,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 24,
-    name: 'Stage 24',
+    name: 'KIMCHI',
     description: 'どんどん難しくなるぞ!',
     targetScore: 2600,
     moveLimit: 30,
@@ -296,7 +296,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 25,
-    name: 'Stage 25',
+    name: 'YAKI ONIGIRI',
     description: 'どんどん難しくなるぞ!',
     targetScore: 2600,
     moveLimit: 30,
@@ -307,7 +307,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 26,
-    name: 'Stage 26',
+    name: 'TOFU',
     description: 'どんどん難しくなるぞ!',
     targetScore: 2700,
     moveLimit: 30,
@@ -318,7 +318,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 27,
-    name: 'Stage 27',
+    name: 'NATTO',
     description: 'どんどん難しくなるぞ!',
     targetScore: 2700,
     moveLimit: 30,
@@ -329,7 +329,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 28,
-    name: 'Stage 28',
+    name: 'MISO',
     description: 'どんどん難しくなるぞ!',
     targetScore: 2800,
     moveLimit: 30,
@@ -340,7 +340,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 29,
-    name: 'Stage 29',
+    name: 'SHOYU',
     description: 'どんどん難しくなるぞ!',
     targetScore: 2800,
     moveLimit: 30,
@@ -351,7 +351,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 30,
-    name: 'Stage 30',
+    name: 'WASABI',
     description: 'ボス級の難易度だ!慎重にいこう。',
     targetScore: 3300,
     moveLimit: 35,
@@ -362,7 +362,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 31,
-    name: 'Stage 31',
+    name: 'GINGER',
     description: 'どんどん難しくなるぞ!',
     targetScore: 2900,
     moveLimit: 30,
@@ -373,7 +373,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 32,
-    name: 'Stage 32',
+    name: 'KARASHI',
     description: 'どんどん難しくなるぞ!',
     targetScore: 2900,
     moveLimit: 30,
@@ -384,7 +384,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 33,
-    name: 'Stage 33',
+    name: 'DAIKON',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3000,
     moveLimit: 30,
@@ -395,7 +395,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 34,
-    name: 'Stage 34',
+    name: 'CARROT',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3000,
     moveLimit: 30,
@@ -406,7 +406,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 35,
-    name: 'Stage 35',
+    name: 'TOMATO',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3100,
     moveLimit: 30,
@@ -417,7 +417,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 36,
-    name: 'Stage 36',
+    name: 'CUCUMBER',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3100,
     moveLimit: 30,
@@ -428,7 +428,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 37,
-    name: 'Stage 37',
+    name: 'LETTUCE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3200,
     moveLimit: 30,
@@ -439,7 +439,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 38,
-    name: 'Stage 38',
+    name: 'CABBAGE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3200,
     moveLimit: 30,
@@ -450,7 +450,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 39,
-    name: 'Stage 39',
+    name: 'SPINACH',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3300,
     moveLimit: 30,
@@ -461,7 +461,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 40,
-    name: 'Stage 40',
+    name: 'BROCCOLI',
     description: 'ボス級の難易度だ!慎重にいこう。',
     targetScore: 3900,
     moveLimit: 35,
@@ -472,7 +472,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 41,
-    name: 'Stage 41',
+    name: 'CORN',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3300,
     moveLimit: 30,
@@ -483,7 +483,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 42,
-    name: 'Stage 42',
+    name: 'POTATO',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3400,
     moveLimit: 30,
@@ -494,7 +494,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 43,
-    name: 'Stage 43',
+    name: 'PUMPKIN',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3400,
     moveLimit: 30,
@@ -505,7 +505,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 44,
-    name: 'Stage 44',
+    name: 'EGGPLANT',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3500,
     moveLimit: 30,
@@ -516,7 +516,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 45,
-    name: 'Stage 45',
+    name: 'MUSHROOM',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3500,
     moveLimit: 30,
@@ -527,7 +527,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 46,
-    name: 'Stage 46',
+    name: 'SHIITAKE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3600,
     moveLimit: 30,
@@ -538,7 +538,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 47,
-    name: 'Stage 47',
+    name: 'ENOKI',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3600,
     moveLimit: 30,
@@ -549,7 +549,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 48,
-    name: 'Stage 48',
+    name: 'ONION',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3700,
     moveLimit: 30,
@@ -560,7 +560,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 49,
-    name: 'Stage 49',
+    name: 'GARLIC',
     description: 'どんどん難しくなるぞ!',
     targetScore: 3700,
     moveLimit: 30,
@@ -571,7 +571,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 50,
-    name: 'Stage 50',
+    name: 'LEEK',
     description: 'ボス級の難易度だ!慎重にいこう。',
     targetScore: 4400,
     moveLimit: 35,
@@ -582,7 +582,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 51,
-    name: 'Stage 51',
+    name: 'APPLE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 4400,
     moveLimit: 35,
@@ -593,7 +593,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 52,
-    name: 'Stage 52',
+    name: 'BANANA',
     description: 'どんどん難しくなるぞ!',
     targetScore: 4500,
     moveLimit: 35,
@@ -604,7 +604,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 53,
-    name: 'Stage 53',
+    name: 'ORANGE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 4500,
     moveLimit: 35,
@@ -615,7 +615,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 54,
-    name: 'Stage 54',
+    name: 'STRAWBERRY',
     description: 'どんどん難しくなるぞ!',
     targetScore: 4600,
     moveLimit: 35,
@@ -626,7 +626,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 55,
-    name: 'Stage 55',
+    name: 'MELON',
     description: 'どんどん難しくなるぞ!',
     targetScore: 4600,
     moveLimit: 35,
@@ -637,7 +637,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 56,
-    name: 'Stage 56',
+    name: 'WATERMELON',
     description: 'どんどん難しくなるぞ!',
     targetScore: 4700,
     moveLimit: 35,
@@ -648,7 +648,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 57,
-    name: 'Stage 57',
+    name: 'GRAPE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 4700,
     moveLimit: 35,
@@ -659,7 +659,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 58,
-    name: 'Stage 58',
+    name: 'PEACH',
     description: 'どんどん難しくなるぞ!',
     targetScore: 4800,
     moveLimit: 35,
@@ -670,7 +670,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 59,
-    name: 'Stage 59',
+    name: 'PEAR',
     description: 'どんどん難しくなるぞ!',
     targetScore: 4800,
     moveLimit: 35,
@@ -681,7 +681,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 60,
-    name: 'Stage 60',
+    name: 'MANGO',
     description: 'ボス級の難易度だ!慎重にいこう。',
     targetScore: 5600,
     moveLimit: 40,
@@ -692,7 +692,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 61,
-    name: 'Stage 61',
+    name: 'KIWI',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5000,
     moveLimit: 35,
@@ -703,7 +703,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 62,
-    name: 'Stage 62',
+    name: 'PINEAPPLE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5000,
     moveLimit: 35,
@@ -714,7 +714,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 63,
-    name: 'Stage 63',
+    name: 'LEMON',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5100,
     moveLimit: 35,
@@ -725,7 +725,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 64,
-    name: 'Stage 64',
+    name: 'CHERRY',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5100,
     moveLimit: 35,
@@ -736,7 +736,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 65,
-    name: 'Stage 65',
+    name: 'CHICKEN',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5200,
     moveLimit: 35,
@@ -747,7 +747,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 66,
-    name: 'Stage 66',
+    name: 'BEEF',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5200,
     moveLimit: 35,
@@ -758,7 +758,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 67,
-    name: 'Stage 67',
+    name: 'PORK',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5300,
     moveLimit: 35,
@@ -769,7 +769,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 68,
-    name: 'Stage 68',
+    name: 'BACON',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5300,
     moveLimit: 35,
@@ -780,7 +780,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 69,
-    name: 'Stage 69',
+    name: 'SAUSAGE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5400,
     moveLimit: 35,
@@ -791,7 +791,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 70,
-    name: 'Stage 70',
+    name: 'CHEESE',
     description: 'ボス級の難易度だ!慎重にいこう。',
     targetScore: 6200,
     moveLimit: 40,
@@ -802,7 +802,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 71,
-    name: 'Stage 71',
+    name: 'BUTTER',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5500,
     moveLimit: 35,
@@ -813,7 +813,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 72,
-    name: 'Stage 72',
+    name: 'YOGURT',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5500,
     moveLimit: 35,
@@ -824,7 +824,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 73,
-    name: 'Stage 73',
+    name: 'MILK',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5600,
     moveLimit: 35,
@@ -835,7 +835,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 74,
-    name: 'Stage 74',
+    name: 'CREAM',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5600,
     moveLimit: 35,
@@ -846,7 +846,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 75,
-    name: 'Stage 75',
+    name: 'BREAD',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5700,
     moveLimit: 35,
@@ -857,7 +857,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 76,
-    name: 'Stage 76',
+    name: 'RICE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5700,
     moveLimit: 35,
@@ -868,7 +868,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 77,
-    name: 'Stage 77',
+    name: 'PASTA',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5800,
     moveLimit: 35,
@@ -879,7 +879,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 78,
-    name: 'Stage 78',
+    name: 'NOODLE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5800,
     moveLimit: 35,
@@ -890,7 +890,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 79,
-    name: 'Stage 79',
+    name: 'UDON',
     description: 'どんどん難しくなるぞ!',
     targetScore: 5900,
     moveLimit: 35,
@@ -901,7 +901,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 80,
-    name: 'Stage 80',
+    name: 'SOBA',
     description: 'ボス級の難易度だ!慎重にいこう。',
     targetScore: 6800,
     moveLimit: 40,
@@ -912,7 +912,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 81,
-    name: 'Stage 81',
+    name: 'RAMEN',
     description: 'どんどん難しくなるぞ!',
     targetScore: 6900,
     moveLimit: 40,
@@ -923,7 +923,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 82,
-    name: 'Stage 82',
+    name: 'SUSHI',
     description: 'どんどん難しくなるぞ!',
     targetScore: 6900,
     moveLimit: 40,
@@ -934,7 +934,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 83,
-    name: 'Stage 83',
+    name: 'SASHIMI',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7000,
     moveLimit: 40,
@@ -945,7 +945,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 84,
-    name: 'Stage 84',
+    name: 'TEMPURA',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7000,
     moveLimit: 40,
@@ -956,7 +956,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 85,
-    name: 'Stage 85',
+    name: 'YAKITORI',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7100,
     moveLimit: 40,
@@ -967,7 +967,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 86,
-    name: 'Stage 86',
+    name: 'TONKATSU',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7200,
     moveLimit: 40,
@@ -978,7 +978,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 87,
-    name: 'Stage 87',
+    name: 'GYOZA',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7200,
     moveLimit: 40,
@@ -989,7 +989,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 88,
-    name: 'Stage 88',
+    name: 'CURRY',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7300,
     moveLimit: 40,
@@ -1000,7 +1000,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 89,
-    name: 'Stage 89',
+    name: 'STEW',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7300,
     moveLimit: 40,
@@ -1011,7 +1011,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 90,
-    name: 'Stage 90',
+    name: 'SOUP',
     description: 'ボス級の難易度だ!慎重にいこう。',
     targetScore: 8300,
     moveLimit: 45,
@@ -1022,7 +1022,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 91,
-    name: 'Stage 91',
+    name: 'SALAD',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7500,
     moveLimit: 40,
@@ -1033,7 +1033,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 92,
-    name: 'Stage 92',
+    name: 'SANDWICH',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7500,
     moveLimit: 40,
@@ -1044,7 +1044,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 93,
-    name: 'Stage 93',
+    name: 'PIZZA',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7600,
     moveLimit: 40,
@@ -1055,7 +1055,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 94,
-    name: 'Stage 94',
+    name: 'HAMBURGER',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7600,
     moveLimit: 40,
@@ -1066,7 +1066,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 95,
-    name: 'Stage 95',
+    name: 'STEAK',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7700,
     moveLimit: 40,
@@ -1077,7 +1077,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 96,
-    name: 'Stage 96',
+    name: 'CHOCOLATE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7800,
     moveLimit: 40,
@@ -1088,7 +1088,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 97,
-    name: 'Stage 97',
+    name: 'COOKIE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7800,
     moveLimit: 40,
@@ -1099,7 +1099,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 98,
-    name: 'Stage 98',
+    name: 'CAKE',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7900,
     moveLimit: 40,
@@ -1110,7 +1110,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 99,
-    name: 'Stage 99',
+    name: 'PUDDING',
     description: 'どんどん難しくなるぞ!',
     targetScore: 7900,
     moveLimit: 40,
@@ -1121,7 +1121,7 @@ export const LEVELS: Level[] = [
   },
   {
     id: 100,
-    name: 'Stage 100',
+    name: 'ICE CREAM',
     description: 'ボス級の難易度だ!慎重にいこう。',
     targetScore: 9000,
     moveLimit: 45,

@@ -33,8 +33,8 @@ export const StageResultModal: React.FC<StageResultModalProps> = ({
   const isClear = status === 'clear';
   const title = isClear ? 'STAGE CLEAR!' : 'TRY AGAIN';
   const description = isClear
-    ? '次のステージへ進もう！'
-    : '手数が尽きました。もう一度挑戦しましょう。';
+    ? "Let's move on to the next stage!"
+    : 'You have run out of moves. Try again!';
 
   return (
     <RNModal visible={visible} transparent animationType="fade">

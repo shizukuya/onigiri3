@@ -54,7 +54,7 @@ export const StageSelectScreen: React.FC<StageSelectScreenProps> = ({
 
     return (
         <ImageBackground
-            source={require('../../assets/images/bg_stage1.png')}
+            source={require('../../assets/images/stage-map-bg.png')}
             style={styles.container}
             resizeMode="cover"
         >
