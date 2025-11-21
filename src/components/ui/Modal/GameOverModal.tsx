@@ -7,12 +7,16 @@ import { View, Text, Modal as RNModal } from 'react-native';
 import { Button } from '../Button';
 import { styles } from './GameOverModal.styles';
 
+import { useRewardedAd } from 'react-native-google-mobile-ads';
+import { AdMobConfig } from '../../../constants/AdMobConfig';
+
 interface GameOverModalProps {
   visible: boolean;
   score: number;
   highScore: number;
   onRestart: () => void;
   onClose?: () => void;
+  onRevive?: () => void; // New prop for revival
 }
 
 export const GameOverModal: React.FC<GameOverModalProps> = ({
@@ -21,8 +25,30 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   highScore,
   onRestart,
   onClose,
+  onRevive,
 }) => {
   const isNewHighScore = score >= highScore && highScore > 0;
+
+  const { isLoaded, isEarnedReward, load, show } = useRewardedAd(
+    AdMobConfig.rewardedAdUnitId,
+    {
+      requestNonPersonalizedAdsOnly: true,
+    }
+  );
+
+  // Load ad when modal becomes visible
+  React.useEffect(() => {
+    if (visible) {
+      load();
+    }
+  }, [visible, load]);
+
+  // Handle reward
+  React.useEffect(() => {
+    if (isEarnedReward && onRevive) {
+      onRevive();
+    }
+  }, [isEarnedReward, onRevive]);
 
   return (
     <RNModal
@@ -54,6 +80,15 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
           )}
 
           <View style={styles.buttonContainer}>
+            {/* Watch Ad Button */}
+            {isLoaded && onRevive && (
+              <Button
+                title="Watch Ad to Revive"
+                onPress={() => show()}
+                variant="secondary"
+                style={{ marginBottom: 10 }}
+              />
+            )}
             <Button title="PLAY AGAIN" onPress={onRestart} variant="primary" />
           </View>
         </View>

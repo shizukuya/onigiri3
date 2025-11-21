@@ -99,7 +99,7 @@ interface PieceProps {
   isBlock?: boolean;
 }
 
-export const Piece: React.FC<PieceProps> = ({
+export const Piece = React.memo(({
   type,
   size,
   isSelected,
@@ -107,7 +107,7 @@ export const Piece: React.FC<PieceProps> = ({
   isHint = false,
   special = 'none',
   isBlock = false,
-}) => {
+}: PieceProps) => {
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
   const rotation = useSharedValue(0);
@@ -302,4 +302,4 @@ export const Piece: React.FC<PieceProps> = ({
       </Animated.View>
     </View>
   );
-};
+});

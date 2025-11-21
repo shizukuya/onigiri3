@@ -7,6 +7,7 @@ export interface SaveData {
     highScores: Record<number, number>; // levelIndex -> score
     lives: number;
     bgmEnabled: boolean;
+    lifeZeroTimestamp?: number; // Timestamp when lives hit 0
 }
 
 const DEFAULT_DATA: SaveData = {
@@ -14,6 +15,7 @@ const DEFAULT_DATA: SaveData = {
     highScores: {},
     lives: 5,
     bgmEnabled: true,
+    lifeZeroTimestamp: undefined,
 };
 
 export const saveGameData = async (data: Partial<SaveData>) => {

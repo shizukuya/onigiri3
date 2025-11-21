@@ -23,7 +23,7 @@ interface ParticleProps {
     delay: number;
 }
 
-const Particle: React.FC<ParticleProps> = ({ startPos, color, angle, distance, delay }) => {
+const Particle = React.memo(({ startPos, color, angle, distance, delay }: ParticleProps) => {
     const opacity = useSharedValue(1);
     const translateX = useSharedValue(0);
     const translateY = useSharedValue(0);
@@ -64,7 +64,7 @@ const Particle: React.FC<ParticleProps> = ({ startPos, color, angle, distance, d
             ]}
         />
     );
-};
+});
 
 interface ParticleOverlayProps {
     positions: Position[];
@@ -85,12 +85,12 @@ export const ParticleOverlay: React.FC<ParticleOverlayProps> = ({ positions, gri
         const centerX = pos.col * cellSize + cellSize / 2;
         const centerY = pos.row * cellSize + cellSize / 2;
 
-        // Create 8 particles per match position
-        return Array.from({ length: 8 }).map((_, i) => ({
+        // Create 5 particles per match position (Reduced from 8)
+        return Array.from({ length: 5 }).map((_, i) => ({
             id: `${pos.row}-${pos.col}-${i}`,
             startPos: { x: centerX, y: centerY },
             color: '#FFF', // Can be dynamic based on piece type if passed
-            angle: i * 45 + Math.random() * 20,
+            angle: i * 72 + Math.random() * 20, // 360 / 5 = 72
             distance: cellSize * 0.8 + Math.random() * 20,
             delay: index * 50, // Stagger slightly
         }));

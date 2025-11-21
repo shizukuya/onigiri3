@@ -25,14 +25,14 @@ interface GridProps {
   hintPositions?: Position[];
 }
 
-export const Grid: React.FC<GridProps> = ({
+export const Grid = React.memo(({
   grid,
   onSwipe,
   selectedPosition,
   isProcessing,
   matchPositions = [],
   hintPositions = [],
-}) => {
+}: GridProps) => {
   const pieceSize = BOARD_SIZE / GAME_CONFIG.GRID_SIZE;
   const swipeStartPos = useRef<Position | null>(null);
   const matchSet = useMemo(
@@ -171,4 +171,4 @@ export const Grid: React.FC<GridProps> = ({
       </View>
     </PanGestureHandler>
   );
-};
+});

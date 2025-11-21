@@ -18,7 +18,7 @@ import { LEVELS } from '../constants/levels';
 import { useSound } from './useSound';
 
 const { BASE_SCORE_PER_PIECE, GRID_SIZE } = GAME_CONFIG;
-import { loadGameData } from '../utils/storage';
+import { loadGameData, saveGameData } from '../utils/storage';
 
 export const useGameLogic = () => {
   const haptics = useHaptics();
@@ -26,14 +26,33 @@ export const useGameLogic = () => {
   const [levelIndex, setLevelIndex] = useState(0);
 
   // Load saved level on mount
+  // Load saved level and check life recovery on mount
   useEffect(() => {
-    const initLevel = async () => {
+    const initGame = async () => {
       const data = await loadGameData();
-      if (data && typeof data.currentLevel === 'number') {
-        setLevelIndex(data.currentLevel);
+      if (data) {
+        if (typeof data.currentLevel === 'number') {
+          setLevelIndex(data.currentLevel);
+        }
+
+        // Life Recovery Logic
+        let currentLives = data.lives ?? GAME_CONFIG.INITIAL_LIVES;
+        if (currentLives === 0 && data.lifeZeroTimestamp) {
+          const now = Date.now();
+          const elapsed = now - data.lifeZeroTimestamp;
+          const twelveHours = 12 * 60 * 60 * 1000;
+
+          if (elapsed >= twelveHours) {
+            // Recover exactly 1 life
+            currentLives = 1;
+            // Clear timestamp
+            await saveGameData({ lives: 1, lifeZeroTimestamp: undefined });
+          }
+        }
+        setLives(currentLives);
       }
     };
-    initLevel();
+    initGame();
   }, []);
 
   const currentLevel: Level = useMemo(
@@ -150,6 +169,10 @@ export const useGameLogic = () => {
           const next = Math.max(prev - 1, 0);
           if (next <= 0) {
             setGameOver(true);
+            // Save timestamp when lives hit 0
+            saveGameData({ lives: 0, lifeZeroTimestamp: Date.now() });
+          } else {
+            saveGameData({ lives: next });
           }
           return next;
         });
@@ -430,6 +453,18 @@ export const useGameLogic = () => {
     setStageFailed(false);
     setGameOver(false);
     playEffect('reset');
+    playEffect('reset');
+  }, [playEffect]);
+
+  /**
+   * 広告視聴などでライフを回復
+   */
+  const recoverLife = useCallback(async () => {
+    const maxLives = GAME_CONFIG.INITIAL_LIVES; // 3
+    setLives(maxLives);
+    setGameOver(false); // If game over, revive
+    await saveGameData({ lives: maxLives, lifeZeroTimestamp: undefined });
+    playEffect('reset'); // Or a recovery sound
   }, [playEffect]);
 
   return {
@@ -455,5 +490,6 @@ export const useGameLogic = () => {
     removeSpecialEffect,
     levelIndex,
     isLoading,
+    recoverLife,
   };
 };

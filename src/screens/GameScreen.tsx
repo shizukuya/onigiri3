@@ -26,6 +26,8 @@ import { useSound } from '../hooks/useSound';
 import { Position } from '../types/game';
 import { COLORS } from '../constants/colors';
 import { saveGameData, saveHighScore } from '../utils/storage';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
+import { AdMobConfig } from '../constants/AdMobConfig';
 
 const { width } = Dimensions.get('window');
 const GRID_BOARD_SIZE = width - 8;
@@ -58,6 +60,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
     activeEffects,
     removeSpecialEffect,
     isLoading,
+    recoverLife,
   } = useGameLogic();
 
   const { playBgm, stopBgm } = useSound();
@@ -402,7 +405,19 @@ export const GameScreen: React.FC<GameScreenProps> = ({ onBack }) => {
           score={score}
           highScore={highScore}
           onRestart={resetRun}
+          onRevive={recoverLife}
         />
+
+        {/* Banner Ad */}
+        <View style={styles.bannerContainer}>
+          <BannerAd
+            unitId={AdMobConfig.bannerAdUnitId}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+            requestOptions={{
+              requestNonPersonalizedAdsOnly: true,
+            }}
+          />
+        </View>
       </SafeAreaView>
 
       {/* Loading Overlay - Outside SafeAreaView */}
@@ -536,5 +551,11 @@ const styles = StyleSheet.create({
   loadingImage: {
     width: 200,
     height: 200,
+  },
+  bannerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 'auto',
+    paddingBottom: 0,
   },
 });

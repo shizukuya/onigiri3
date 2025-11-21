@@ -28,6 +28,15 @@
         "backgroundColor": "#fff"
       }
     },
+    "plugins": [
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-5081824799734894~6536969289",
+          "iosAppId": "ca-app-pub-5081824799734894~1197120491"
+        }
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "6e1c45b0-2853-48c8-8e4c-03a6ee3345f8"
