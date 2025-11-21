@@ -14,7 +14,7 @@ interface GameOverModalProps {
   visible: boolean;
   score: number;
   highScore: number;
-  onRestart: () => void;
+  onBack: () => void;
   onClose?: () => void;
   onRevive?: () => void; // New prop for revival
 }
@@ -23,7 +23,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   visible,
   score,
   highScore,
-  onRestart,
+  onBack,
   onClose,
   onRevive,
 }) => {
@@ -89,7 +89,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
                 style={{ marginBottom: 10 }}
               />
             )}
-            <Button title="PLAY AGAIN" onPress={onRestart} variant="primary" />
+            <Button title="Back to Title" onPress={onBack} variant="primary" />
           </View>
         </View>
       </View>

@@ -14,6 +14,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { LEVELS } from '../constants/levels';
 import { loadGameData } from '../utils/storage';
 import { COLORS } from '../constants/colors';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
+import { AdMobConfig } from '../constants/AdMobConfig';
 
 const { width } = Dimensions.get('window');
 
@@ -112,6 +114,15 @@ export const StageSelectScreen: React.FC<StageSelectScreenProps> = ({
                             );
                         })}
                     </ScrollView>
+                    <View style={styles.bannerContainer}>
+                        <BannerAd
+                            unitId={AdMobConfig.bannerAdUnitId}
+                            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                            requestOptions={{
+                                requestNonPersonalizedAdsOnly: true,
+                            }}
+                        />
+                    </View>
                 </SafeAreaView>
             </View>
         </ImageBackground>
@@ -203,5 +214,10 @@ const styles = StyleSheet.create({
     starsContainer: {
         flexDirection: 'row',
         marginTop: 2,
+    },
+    bannerContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingBottom: 0,
     },
 });

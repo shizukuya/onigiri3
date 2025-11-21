@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions, Switch, ScrollView, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../constants/colors';
 import { loadGameData, saveGameData } from '../utils/storage';
 
@@ -30,65 +31,67 @@ export const ConfigScreen: React.FC<ConfigScreenProps> = ({ onBack }) => {
             resizeMode="cover"
         >
             <View style={styles.overlay}>
-                <View style={styles.header}>
-                    <Text style={styles.title}>CONFIG</Text>
-                </View>
-
-                <View style={styles.content}>
-                    <View style={styles.settingRow}>
-                        <Text style={styles.settingLabel}>BGM</Text>
-                        <Switch
-                            trackColor={{ false: "#767577", true: COLORS.primary }}
-                            thumbColor={bgmEnabled ? "#f4f3f4" : "#f4f3f4"}
-                            ios_backgroundColor="#3e3e3e"
-                            onValueChange={toggleBgm}
-                            value={bgmEnabled}
-                        />
+                <SafeAreaView style={styles.safeArea}>
+                    <View style={styles.header}>
+                        <Text style={styles.title}>CONFIG</Text>
                     </View>
 
-                    <View style={styles.divider} />
-
-                    <Text style={styles.sectionTitle}>How to Play</Text>
-                    <ScrollView style={styles.instructionsContainer}>
-                        <Text style={styles.instructionText}>
-                            1. Swap adjacent pieces to match 3 or more of the same type.
-                        </Text>
-                        <Text style={styles.instructionText}>
-                            2. Create matches to score points and clear the stage target.
-                        </Text>
-                        <Text style={styles.instructionText}>
-                            3. Use special items for massive destruction:
-                        </Text>
-
-                        <View style={styles.itemRow}>
-                            <Image source={require('../../assets/images/bomb.png')} style={styles.itemImage} resizeMode="contain" />
-                            <Text style={styles.itemDescription}>Bomb: Explodes a large area.</Text>
+                    <View style={styles.content}>
+                        <View style={styles.settingRow}>
+                            <Text style={styles.settingLabel}>BGM</Text>
+                            <Switch
+                                trackColor={{ false: "#767577", true: COLORS.primary }}
+                                thumbColor={bgmEnabled ? "#f4f3f4" : "#f4f3f4"}
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={toggleBgm}
+                                value={bgmEnabled}
+                            />
                         </View>
 
-                        <View style={styles.itemRow}>
-                            <Image source={require('../../assets/images/dokan.png')} style={styles.itemImage} resizeMode="contain" />
-                            <Text style={styles.itemDescription}>Pipe: Clears a vertical column.</Text>
-                        </View>
+                        <View style={styles.divider} />
 
-                        <View style={styles.itemRow}>
-                            <Image source={require('../../assets/images/ring.png')} style={styles.itemImage} resizeMode="contain" />
-                            <Text style={styles.itemDescription}>Ring: Clears a surrounding area.</Text>
-                        </View>
+                        <Text style={styles.sectionTitle}>How to Play</Text>
+                        <ScrollView style={styles.instructionsContainer} showsVerticalScrollIndicator={false}>
+                            <Text style={styles.instructionText}>
+                                1. Swap adjacent pieces to match 3 or more of the same type.
+                            </Text>
+                            <Text style={styles.instructionText}>
+                                2. Create matches to score points and clear the stage target.
+                            </Text>
+                            <Text style={styles.instructionText}>
+                                3. Use special items for massive destruction:
+                            </Text>
 
-                        <View style={styles.itemRow}>
-                            <Image source={require('../../assets/images/kesigomu.png')} style={styles.itemImage} resizeMode="contain" />
-                            <Text style={styles.itemDescription}>Eraser: Clears a horizontal row.</Text>
-                        </View>
+                            <View style={styles.itemRow}>
+                                <Image source={require('../../assets/images/bomb.png')} style={styles.itemImage} resizeMode="contain" />
+                                <Text style={styles.itemDescription}>Bomb: Explodes a large area.</Text>
+                            </View>
 
-                        <Text style={styles.instructionText}>
-                            4. Watch out for your remaining moves!
-                        </Text>
-                    </ScrollView>
-                </View>
+                            <View style={styles.itemRow}>
+                                <Image source={require('../../assets/images/dokan.png')} style={styles.itemImage} resizeMode="contain" />
+                                <Text style={styles.itemDescription}>Pipe: Clears a vertical column.</Text>
+                            </View>
 
-                <TouchableOpacity style={styles.backButton} onPress={onBack}>
-                    <Text style={styles.backButtonText}>BACK</Text>
-                </TouchableOpacity>
+                            <View style={styles.itemRow}>
+                                <Image source={require('../../assets/images/ring.png')} style={styles.itemImage} resizeMode="contain" />
+                                <Text style={styles.itemDescription}>Ring: Clears a surrounding area.</Text>
+                            </View>
+
+                            <View style={styles.itemRow}>
+                                <Image source={require('../../assets/images/kesigomu.png')} style={styles.itemImage} resizeMode="contain" />
+                                <Text style={styles.itemDescription}>Eraser: Clears a horizontal row.</Text>
+                            </View>
+
+                            <Text style={styles.instructionText}>
+                                4. Watch out for your remaining moves!
+                            </Text>
+                        </ScrollView>
+                    </View>
+
+                    <TouchableOpacity style={styles.backButton} onPress={onBack}>
+                        <Text style={styles.backButtonText}>BACK</Text>
+                    </TouchableOpacity>
+                </SafeAreaView>
             </View>
         </ImageBackground>
     );
@@ -101,12 +104,15 @@ const styles = StyleSheet.create({
     overlay: {
         flex: 1,
         backgroundColor: 'rgba(0,0,0,0.5)',
-        padding: 20,
-        paddingTop: 60,
+    },
+    safeArea: {
+        flex: 1,
+        paddingHorizontal: 20,
+        paddingBottom: 20,
     },
     header: {
         alignItems: 'center',
-        marginBottom: 30,
+        marginVertical: 20,
     },
     title: {
         fontSize: 40,
@@ -137,7 +143,7 @@ const styles = StyleSheet.create({
     divider: {
         height: 1,
         backgroundColor: '#ccc',
-        marginVertical: 20,
+        marginVertical: 15,
     },
     sectionTitle: {
         fontSize: 20,
@@ -153,13 +159,6 @@ const styles = StyleSheet.create({
         color: '#333',
         marginBottom: 10,
         lineHeight: 24,
-    },
-    instructionSubText: {
-        fontSize: 15,
-        color: '#555',
-        marginBottom: 5,
-        marginLeft: 20,
-        lineHeight: 22,
     },
     itemRow: {
         flexDirection: 'row',
@@ -182,7 +181,6 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         borderRadius: 30,
         alignItems: 'center',
-        marginBottom: 20,
     },
     backButtonText: {
         color: '#FFFFFF',
